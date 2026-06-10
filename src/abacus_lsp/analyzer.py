@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -92,6 +93,8 @@ def analyze_case(case_dir: Path, registry: SchemaRegistry | None = None) -> list
     ]
     diagnostics.extend(_cross_file_diagnostics(input_file, stru_file, kpt_file, case_dir))
     diagnostics.extend(_workflow_diagnostics(input_file, kpt_file))
+    diagnostics.extend(_apns_diagnostics(stru_file, case_dir))
+    diagnostics.extend(_matmaster_diagnostics(input_file, stru_file, kpt_file, case_dir))
     return sorted(diagnostics, key=lambda item: (item.file, item.line, item.code))
 
 
@@ -582,6 +585,115 @@ def _workflow_diagnostics(input_file: InputFile, kpt_file: KptFile) -> list[Diag
                     )
                 )
     return diagnostics
+
+
+def _apns_diagnostics(stru_file: StruFile, case_dir: Path) -> list[Diagnostic]:
+    config = _load_lsp_config(case_dir, "apns.json")
+    if not config:
+        return []
+    allowed_pseudos = set(config.get("pseudopotentials", []))
+    allowed_orbitals = set(config.get("orbitals", []))
+    diagnostics: list[Diagnostic] = []
+    for pseudo in stru_file.pseudopotentials:
+        if allowed_pseudos and pseudo not in allowed_pseudos:
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS401",
+                    "warning",
+                    f"pseudopotential is not present in APNS inventory: {pseudo}",
+                    str(stru_file.path),
+                    1,
+                    suggested_fix={"kind": "choose_apns_pseudopotential", "filename": pseudo},
+                )
+            )
+    for orbital in stru_file.orbitals:
+        if allowed_orbitals and orbital not in allowed_orbitals:
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS402",
+                    "warning",
+                    f"orbital file is not present in APNS inventory: {orbital}",
+                    str(stru_file.path),
+                    1,
+                    suggested_fix={"kind": "choose_apns_orbital", "filename": orbital},
+                )
+            )
+    return diagnostics
+
+
+def _matmaster_diagnostics(
+    input_file: InputFile,
+    stru_file: StruFile,
+    kpt_file: KptFile,
+    case_dir: Path,
+) -> list[Diagnostic]:
+    config = _load_lsp_config(case_dir, "matmaster.json")
+    if not config.get("enabled", False):
+        return []
+    diagnostics: list[Diagnostic] = []
+    min_grid = config.get("min_kpoint_grid")
+    actual_grid = _auto_kpt_grid(kpt_file)
+    if min_grid and actual_grid and any(
+        actual < minimum for actual, minimum in zip(actual_grid, min_grid)
+    ):
+        diagnostics.append(
+            Diagnostic(
+                "ABACUS420",
+                "warning",
+                "KPT grid is below MatMaster minimum density",
+                str(kpt_file.path),
+                1,
+                evidence=[f"actual={actual_grid}", f"minimum={min_grid}"],
+                suggested_fix={"kind": "increase_kpt_grid", "minimum": min_grid},
+            )
+        )
+    if config.get("forbid_parent_paths", True):
+        for key in ("pseudo_dir", "orbital_dir"):
+            value = input_file.parameters.get(key, "")
+            if ".." in Path(value).parts or Path(value).is_absolute():
+                diagnostics.append(
+                    Diagnostic(
+                        "ABACUS421",
+                        "warning",
+                        f"{key} should be workspace-relative for MatMaster/Bohrium execution",
+                        str(input_file.path),
+                        input_file.parameter_lines.get(key, [1])[-1],
+                    )
+                )
+    if (
+        config.get("require_lcao_orbitals", True)
+        and input_file.parameters.get("basis_type", "").lower() == "lcao"
+        and not stru_file.orbitals
+    ):
+        diagnostics.append(
+            Diagnostic(
+                "ABACUS422",
+                "error",
+                "MatMaster LCAO jobs require explicit NUMERICAL_ORBITAL entries",
+                str(stru_file.path),
+                1,
+            )
+        )
+    return diagnostics
+
+
+def _auto_kpt_grid(kpt_file: KptFile) -> tuple[int, int, int] | None:
+    if kpt_file.count != 0 or kpt_file.mode not in {"gamma", "mp"} or not kpt_file.rows:
+        return None
+    parts = kpt_file.rows[0][1].split()
+    if len(parts) < 3:
+        return None
+    try:
+        return int(parts[0]), int(parts[1]), int(parts[2])
+    except ValueError:
+        return None
+
+
+def _load_lsp_config(case_dir: Path, filename: str) -> dict:
+    path = case_dir / ".abacus-lsp" / filename
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _truthy(value: str) -> bool:
