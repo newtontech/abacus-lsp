@@ -1,0 +1,4 @@
+INPUT_PARAMETERS
+stru_file custom_stru
+calculation scf
+stru_file other_stru

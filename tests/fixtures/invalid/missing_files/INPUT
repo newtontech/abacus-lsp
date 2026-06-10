@@ -1,0 +1,4 @@
+INPUT_PARAMETERS
+calculation scf
+stru_file   missing_stru
+kpoint_file missing_kpt

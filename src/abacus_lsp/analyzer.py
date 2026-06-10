@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 from .diagnostics import Diagnostic
 from .schema import SchemaRegistry, validate_keyword_value
@@ -159,13 +160,13 @@ def parse_input(path: Path, registry: SchemaRegistry | None = None) -> InputFile
             Diagnostic("ABACUS001", "error", "INPUT_PARAMETERS header is missing", str(path), 1)
         )
 
-    for keyword, lines in result.parameter_lines.items():
+    for kw, lines in result.parameter_lines.items():
         if len(lines) > 1:
             result.diagnostics.append(
                 Diagnostic(
                     "ABACUS007",
                     "warning",
-                    f"{keyword} is repeated; ABACUS uses the last value",
+                    f"{kw} is repeated; ABACUS uses the last value",
                     str(path),
                     lines[-1],
                     evidence=[f"previous definitions on lines {', '.join(map(str, lines[:-1]))}"],
@@ -689,11 +690,11 @@ def _auto_kpt_grid(kpt_file: KptFile) -> tuple[int, int, int] | None:
         return None
 
 
-def _load_lsp_config(case_dir: Path, filename: str) -> dict:
+def _load_lsp_config(case_dir: Path, filename: str) -> dict[str, Any]:
     path = case_dir / ".abacus-lsp" / filename
     if not path.exists():
         return {}
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8"))  # type: ignore[no-any-return]
 
 
 def _truthy(value: str) -> bool:
