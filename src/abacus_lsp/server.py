@@ -323,9 +323,18 @@ def _create_server() -> Any:
 def _register_features(server: Any) -> None:
     """Register LSP feature handlers on a pygls server instance."""
     try:
-        from lsprotocol import types as lsp
+        from lsprotocol import types as _lsp
     except ImportError:
-        return
+        class _FallbackLsp:
+            TEXT_DOCUMENT_COMPLETION = "textDocument/completion"
+            TEXT_DOCUMENT_HOVER = "textDocument/hover"
+            TEXT_DOCUMENT_DOCUMENT_SYMBOL = "textDocument/documentSymbol"
+            TEXT_DOCUMENT_FOLDING_RANGE = "textDocument/foldingRange"
+            TEXT_DOCUMENT_FORMATTING = "textDocument/formatting"
+
+        lsp: Any = _FallbackLsp()
+    else:
+        lsp = _lsp
 
     @server.feature(lsp.TEXT_DOCUMENT_COMPLETION)  # type: ignore[untyped-decorator]
     def completions(params: Any) -> Any:
