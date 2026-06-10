@@ -73,11 +73,25 @@ def fmt_main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="abacus-fmt")
     parser.add_argument("-w", "--write", action="store_true", help="write files in place")
     parser.add_argument("--normalize", action="store_true", help="canonicalize display order")
+    parser.add_argument("--keyword-case", choices=["lower", "upper", "keep"], default="lower")
+    parser.add_argument(
+        "--bool-style",
+        choices=["1/0", "true/false", "t/f", "yes/no", "keep"],
+        default="keep",
+    )
     parser.add_argument("files", nargs="+", type=Path)
     args = parser.parse_args(argv)
     for path in args.files:
         text = path.read_text(encoding="utf-8")
-        formatted = format_file_text(path.name, text, FormatOptions(normalize=args.normalize))
+        formatted = format_file_text(
+            path.name,
+            text,
+            FormatOptions(
+                normalize=args.normalize,
+                keyword_case=args.keyword_case,
+                boolean_style=args.bool_style,
+            ),
+        )
         if args.write:
             path.write_text(formatted, encoding="utf-8")
         else:

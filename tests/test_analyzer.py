@@ -59,9 +59,9 @@ def test_normalize_formatter_keeps_last_duplicate() -> None:
         FormatOptions(normalize=True),
     )
 
-    assert "# duplicate ignored: ecutwfc 50" in formatted
+    assert "# [dup] ecutwfc 50" in formatted
     assert "ecutwfc     100" in formatted
-    assert "gamma_only  1" in formatted
+    assert "gamma_only  true" in formatted
 
 
 def test_stru_and_kpt_formatter_are_idempotent() -> None:
