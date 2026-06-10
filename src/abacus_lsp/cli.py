@@ -5,7 +5,8 @@ import json
 import sys
 from pathlib import Path
 
-from .analyzer import analyze_case, format_input_text
+from .analyzer import analyze_case
+from .formatter import format_file
 
 
 def lsp_main(argv: list[str] | None = None) -> int:
@@ -41,12 +42,29 @@ def lint_main(argv: list[str] | None = None) -> int:
 def fmt_main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="abacus-fmt")
     parser.add_argument("-w", "--write", action="store_true", help="write files in place")
+    parser.add_argument(
+        "--normalize", action="store_true",
+        help="apply normalize formatter (reorder by category, collapse duplicates)",
+    )
+    parser.add_argument(
+        "--keyword-case", choices=["lower", "upper", "keep"], default="lower",
+        help="keyword casing for normalize mode (default: lower)",
+    )
+    parser.add_argument(
+        "--bool-style", choices=["1/0", "true/false", "t/f", "yes/no", "keep"],
+        default="keep",
+        help="boolean value style for normalize mode (default: keep)",
+    )
     parser.add_argument("files", nargs="+", type=Path)
     args = parser.parse_args(argv)
     for path in args.files:
         text = path.read_text(encoding="utf-8")
-        formatted = (
-            format_input_text(text) if path.name.upper() == "INPUT" else text.rstrip() + "\n"
+        formatted = format_file(
+            text,
+            path.name,
+            normalize=args.normalize,
+            keyword_case=args.keyword_case,
+            bool_style=args.bool_style,
         )
         if args.write:
             path.write_text(formatted, encoding="utf-8")

@@ -210,49 +210,9 @@ def parse_kpt(path: Path) -> KptFile:
 
 
 def format_input_text(text: str) -> str:
-    lines = text.splitlines()
-    entries: list[tuple[str, str, str]] = []
-    output: list[str] = []
-    in_parameters = False
-    for raw_line in lines:
-        stripped = raw_line.strip()
-        if stripped.upper() == "INPUT_PARAMETERS":
-            output.append("INPUT_PARAMETERS")
-            in_parameters = True
-            continue
-        if not in_parameters or not stripped or stripped.startswith(COMMENT_PREFIXES):
-            output.append(raw_line.rstrip())
-            continue
-        body, sep, comment = raw_line.partition("#")
-        parts = body.split(maxsplit=1)
-        if not parts:
-            output.append(raw_line.rstrip())
-            continue
-        key = parts[0]
-        value = parts[1].strip() if len(parts) > 1 else ""
-        entries.append((key, value, f"{sep}{comment}".rstrip()))
-
-    if not entries:
-        return "\n".join(output).rstrip() + "\n"
-
-    width = max(len(key) for key, _value, _comment in entries)
-    formatted_entries = []
-    for key, value, comment in entries:
-        base = f"{key:<{width}}  {value}".rstrip()
-        if comment:
-            base = f"{base}  {comment}"
-        formatted_entries.append(base)
-
-    formatted_iter = iter(formatted_entries)
-    final: list[str] = []
-    seen_header = False
-    for raw_line in output:
-        final.append(raw_line)
-        if raw_line == "INPUT_PARAMETERS" and not seen_header:
-            seen_header = True
-            final.extend(formatted_iter)
-            break
-    return "\n".join(final).rstrip() + "\n"
+    """Format INPUT file text (delegates to safe formatter)."""
+    from .formatter import safe_format_input
+    return safe_format_input(text)
 
 
 def _parse_species(lines: list[str], index: int, result: StruFile) -> int:
