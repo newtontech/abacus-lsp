@@ -1,0 +1,8 @@
+INPUT_PARAMETERS
+suffix      MgO
+calculation scf
+basis_type  lcao
+ecutwfc     100
+scf_thr     1e-6
+pseudo_dir  ./
+orbital_dir ./

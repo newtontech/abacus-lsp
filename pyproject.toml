@@ -42,7 +42,8 @@ Homepage = "https://github.com/newtontech/abacus-lsp"
 Issues = "https://github.com/newtontech/abacus-lsp/issues"
 
 [project.scripts]
-abacus-lsp = "abacus_lsp.__main__:main"
+abacus-schema = "abacus_lsp.cli:schema_main"
+abacus-lsp = "abacus_lsp.cli:lsp_main"
 abacus-lint = "abacus_lsp.cli:lint_main"
 abacus-fmt = "abacus_lsp.cli:fmt_main"
 abacus-test = "abacus_lsp.cli:test_main"
@@ -52,7 +53,7 @@ packages = ["src/abacus_lsp"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v"
+addopts = "--cov=src/abacus_lsp --cov-report=term-missing --cov-fail-under=80 -v"
 
 [tool.ruff]
 line-length = 100
