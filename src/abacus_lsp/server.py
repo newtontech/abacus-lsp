@@ -308,16 +308,16 @@ def run_stdio() -> int:
 def _create_server() -> Any:
     """Create a pygls server, supporting both pygls 1.x and 2.x APIs."""
     try:
-        from pygls.server import LanguageServer  # type: ignore[attr-defined]
+        from pygls.server import LanguageServer
 
         return LanguageServer("abacus-lsp", "0.1.0")
     except (ImportError, AttributeError):
         pass
     # pygls 2.x fallback
     from pygls.protocol import JsonRPCProtocol
-    from pygls.server import JsonRPCServer
+    from pygls.server import JsonRPCServer  # type: ignore[attr-defined]
 
-    return JsonRPCServer(protocol_cls=JsonRPCProtocol, converter_factory=None)  # type: ignore[arg-type]
+    return JsonRPCServer(protocol_cls=JsonRPCProtocol, converter_factory=None)
 
 
 def _register_features(server: Any) -> None:
