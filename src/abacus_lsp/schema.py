@@ -236,7 +236,7 @@ class SchemaRegistry:
         merged = dict(self.keywords)
         raw_keywords = payload.get("keywords", {})
         if isinstance(raw_keywords, dict):
-            iterator = raw_keywords.items()
+            iterator: Any = raw_keywords.items()
         else:
             iterator = ((item["name"], item) for item in raw_keywords)
         for name, override in iterator:
