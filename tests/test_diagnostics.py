@@ -456,6 +456,27 @@ def test_rule_invalid_input_value(tmp_path: Path) -> None:
     ), f"Expected invalid value error (ABACUS101), got: {[d.message for d in diagnostics]}"
 
 
+def test_rule_species_orbital_mismatch(tmp_path: Path) -> None:
+    """RULE abacus.stru.species_orbital_mismatch: warn when orbital and species counts differ."""
+    (tmp_path / "INPUT").write_text(
+        "INPUT_PARAMETERS\nbasis_type lcao\ncalculation scf\n", encoding="utf-8"
+    )
+    (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
+    # STRU with 2 species but only 1 orbital file
+    (tmp_path / "STRU").write_text(
+        "ATOMIC_SPECIES\nSi 28.086 Si_ONCV_PBE-1.0.upf\nO 15.999 O_ONCV_PBE-1.0.upf\n"
+        "NUMERICAL_ORBITAL\nSi_gga_8au_100Ry_2s2p1d.orb\n"
+        "LATTICE_CONSTANT\n10.2\n"
+        "LATTICE_VECTORS\n1.0 0.0 0.0\n0.0 1.0 0.0\n0.0 0.0 1.0\n"
+        "ATOMIC_POSITIONS\nDirect\nSi\n0.0\n1\n0.0 0.0 0.0 0 0 0\nO\n0.0\n1\n0.5 0.5 0.5 0 0 0\n",
+        encoding="utf-8",
+    )
+    diagnostics = analyze_case(tmp_path)
+    assert any(
+        d.code == "ABACUS206" and "ORBITAL" in d.message and "count" in d.message.lower()
+        for d in diagnostics
+    ), f"Expected species/orbital mismatch, got: {[d.message for d in diagnostics]}"
+
 
 def test_si_pw_goto_definition_stru_file(tmp_path: Path) -> None:
     """Go-to-definition on stru_file in INPUT navigates to the STRU file."""
