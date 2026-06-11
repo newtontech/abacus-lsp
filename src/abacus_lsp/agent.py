@@ -52,6 +52,23 @@ CAPABILITIES = {
     },
 }
 
+CAPABILITIES = {
+    "agent_tools_backend": {
+        "optional": True,
+        "description": "ABACUS-agent-tools for advanced validation and execution",
+    },
+}
+
+
+def get_agent_tools_status() -> dict[str, Any]:
+    """Check if abacus-agent-tools is available as optional backend."""
+    try:
+        import abacus_agent_tools  # noqa: F401
+
+        return {"available": True, "backend": "abacus-agent-tools"}
+    except ImportError:
+        return {"available": False, "backend": None}
+
 
 def query_diagnostics(case_dir: Path) -> dict[str, Any]:
     diagnostics = analyze_case(case_dir)
