@@ -38,31 +38,23 @@ class AgentLSP:
             return payload
 
     def context(self, line: int = 0, character: int = 0) -> dict:
-        payload = agent_check_payload(
-            software=SOFTWARE, uri=self.uri, operation="context"
-        )
+        payload = agent_check_payload(software=SOFTWARE, uri=self.uri, operation="context")
         payload["position"] = {"line": line, "character": character}
         return payload
 
     def complete(self, line: int = 0, character: int = 0) -> dict:
-        payload = agent_check_payload(
-            software=SOFTWARE, uri=self.uri, operation="complete"
-        )
+        payload = agent_check_payload(software=SOFTWARE, uri=self.uri, operation="complete")
         payload["position"] = {"line": line, "character": character}
         payload["items"] = []
         return payload
 
     def hover(self, line: int = 0, character: int = 0) -> dict:
-        payload = agent_check_payload(
-            software=SOFTWARE, uri=self.uri, operation="hover"
-        )
+        payload = agent_check_payload(software=SOFTWARE, uri=self.uri, operation="hover")
         payload["position"] = {"line": line, "character": character}
         payload["contents"] = None
         return payload
 
     def symbols(self) -> dict:
-        payload = agent_check_payload(
-            software=SOFTWARE, uri=self.uri, operation="symbols"
-        )
+        payload = agent_check_payload(software=SOFTWARE, uri=self.uri, operation="symbols")
         payload["items"] = []
         return payload
