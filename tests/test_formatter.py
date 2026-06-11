@@ -1,4 +1,5 @@
 """Tests for safe and normalize formatters (issues #9 and #10)."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -53,10 +54,7 @@ class TestSafeInput:
         """Duplicate key-value pairs are preserved in order."""
         text = "INPUT_PARAMETERS\necutwfc 50\necutwfc 100\n"
         result = safe_format_input(text)
-        lines = [
-            ln for ln in result.splitlines()
-            if ln.strip() and not ln.strip().startswith("#")
-        ]
+        lines = [ln for ln in result.splitlines() if ln.strip() and not ln.strip().startswith("#")]
         param_lines = [ln for ln in lines if ln != "INPUT_PARAMETERS"]
         assert len(param_lines) == 2
         assert "50" in param_lines[0]
@@ -67,9 +65,9 @@ class TestSafeInput:
         text = "INPUT_PARAMETERS\ncalculation scf\necutwfc 100\nbasis_type lcao\n"
         result = safe_format_input(text)
         param_lines = [
-            ln for ln in result.splitlines()
-            if ln.strip() and ln.strip() != "INPUT_PARAMETERS"
-            and not ln.strip().startswith("#")
+            ln
+            for ln in result.splitlines()
+            if ln.strip() and ln.strip() != "INPUT_PARAMETERS" and not ln.strip().startswith("#")
         ]
         keys = [ln.split()[0] for ln in param_lines]
         assert keys == ["calculation", "ecutwfc", "basis_type"]
@@ -205,9 +203,7 @@ class TestSafeStru:
 
     def test_preserves_order(self) -> None:
         """Section order is preserved."""
-        text = (
-            "LATTICE_CONSTANT\n10.2\n\nATOMIC_SPECIES\nSi 28 Si.upf\n"
-        )
+        text = "LATTICE_CONSTANT\n10.2\n\nATOMIC_SPECIES\nSi 28 Si.upf\n"
         result = safe_format_stru(text)
         lattice_pos = result.index("LATTICE_CONSTANT")
         species_pos = result.index("ATOMIC_SPECIES")
@@ -215,14 +211,7 @@ class TestSafeStru:
 
     def test_preserves_atomic_positions(self) -> None:
         """ATOMIC_POSITIONS section content is preserved."""
-        text = (
-            "ATOMIC_POSITIONS\n"
-            "Direct\n"
-            "Si\n"
-            "0.0\n"
-            "1\n"
-            "0.0 0.0 0.0\n"
-        )
+        text = "ATOMIC_POSITIONS\nDirect\nSi\n0.0\n1\n0.0 0.0 0.0\n"
         result = safe_format_stru(text)
         assert "Direct" in result
         assert "0.0 0.0 0.0" in result
@@ -308,7 +297,8 @@ class TestNormalizeInput:
         # The last value should be the active one
         lines = result.splitlines()
         active = [
-            ln for ln in lines
+            ln
+            for ln in lines
             if ln.strip().startswith("ecutwfc") and not ln.strip().startswith("#")
         ]
         assert len(active) == 1
@@ -386,6 +376,7 @@ class TestFmtCli:
     def test_stdout(self, tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
         """Without -w, formatted output goes to stdout."""
         from abacus_lsp.cli import fmt_main
+
         infile = tmp_path / "INPUT"
         infile.write_text("INPUT_PARAMETERS\necutwfc 100 # Ry\n", encoding="utf-8")
         fmt_main([str(infile)])
@@ -396,6 +387,7 @@ class TestFmtCli:
     def test_write_in_place(self, tmp_path: Path) -> None:
         """With -w, files are written in place."""
         from abacus_lsp.cli import fmt_main
+
         infile = tmp_path / "INPUT"
         infile.write_text("INPUT_PARAMETERS\necutwfc 100\n", encoding="utf-8")
         fmt_main(["-w", str(infile)])
@@ -406,6 +398,7 @@ class TestFmtCli:
     def test_write_stru(self, tmp_path: Path) -> None:
         """STRU files are formatted with -w."""
         from abacus_lsp.cli import fmt_main
+
         infile = tmp_path / "STRU"
         infile.write_text("ATOMIC_SPECIES\nSi   28.085   Si.upf\n", encoding="utf-8")
         fmt_main(["-w", str(infile)])
@@ -415,6 +408,7 @@ class TestFmtCli:
     def test_normalize_flag(self, tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
         """--normalize activates normalize mode."""
         from abacus_lsp.cli import fmt_main
+
         infile = tmp_path / "INPUT"
         infile.write_text("INPUT_PARAMETERS\necutwfc 100\ncalculation scf\n", encoding="utf-8")
         fmt_main(["--normalize", str(infile)])
@@ -424,6 +418,7 @@ class TestFmtCli:
     def test_multiple_files(self, tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
         """Multiple files can be formatted in one invocation."""
         from abacus_lsp.cli import fmt_main
+
         infile = tmp_path / "INPUT"
         infile.write_text("INPUT_PARAMETERS\necutwfc 100\n", encoding="utf-8")
         kptfile = tmp_path / "KPT"
@@ -440,9 +435,7 @@ class TestFmtCli:
         from abacus_lsp.cli import fmt_main
 
         infile = tmp_path / "INPUT"
-        infile.write_text(
-            "INPUT_PARAMETERS\necutwfc 100\ncalculation scf\n", encoding="utf-8"
-        )
+        infile.write_text("INPUT_PARAMETERS\necutwfc 100\ncalculation scf\n", encoding="utf-8")
         fmt_main([str(infile)])
         captured = capsys.readouterr()
         # Safe mode does NOT add category headers
