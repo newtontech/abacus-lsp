@@ -1,0 +1,7 @@
+{
+  "capability_id": "completion",
+  "file_types": ["INPUT"],
+  "provides_keywords": true,
+  "provides_values": true,
+  "provides_file_hints": true
+}
