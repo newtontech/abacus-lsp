@@ -1,4 +1,5 @@
 """Safe and normalize formatters for ABACUS input files (issues #9, #10)."""
+
 from __future__ import annotations
 
 from collections import OrderedDict
@@ -11,55 +12,160 @@ COMMENT_PREFIXES = ("#", "/")
 # ---------------------------------------------------------------------------
 
 INPUT_CATEGORIES: list[tuple[str, list[str]]] = [
-    ("Calculation Control", [
-        "calculation", "suffix", "esolver_type", "nbands", "nupdown",
-        "ntype", "nspin", "nelec", "nelec_delta", "lmaxmax",
-    ]),
-    ("Planewave Basis", [
-        "ecutwfc", "ecutrho", "pw_diag_thr", "pw_diag_nmax",
-        "gamma_only", "gamma_only_local",
-    ]),
-    ("Numerical Atomic Orbitals", [
-        "basis_type", "lcao_ecut", "lcao_dk", "lcao_dr", "lcao_rmax",
-        "lmax", "lmaxall", "search_radius", "search_pbc",
-    ]),
-    ("K-points", [
-        "kpoint_file", "kpar", "kspacing", "nupdown",
-    ]),
-    ("SCF", [
-        "scf_thr", "scf_thr_type", "scf_nmax", "dft_plus_u",
-        "charge_extrap", "out_mul", "symmetry", "init_chg",
-        "chg_extrap", "efield_flag", "dip_cor_flag",
-    ]),
-    ("Structure", [
-        "stru_file", "latname", "cell_factor",
-    ]),
-    ("Files and Paths", [
-        "pseudo_dir", "orbital_dir", "read_file_dir",
-    ]),
-    ("Output", [
-        "out_band", "out_dos", "out_stru", "out_chg", "out_pot",
-        "out_wfc_pw", "out_wfc_r", "out_cube", "out_alllog",
-        "out_app_flag", "out_ndigits", "out_level",
-    ]),
-    ("Smearing", [
-        "smearing_method", "smearing_sigma", "smearing_temp",
-    ]),
-    ("Charge Mixing", [
-        "mixing_type", "mixing_beta", "mixing_ndim", "mixing_gg0",
-        "mixing_gg0_coef", "mixing_tau", "mixing_dftu",
-    ]),
-    ("Relaxation", [
-        "force_thr", "force_thr_ev", "relax_method", "relax_bfgs_w1",
-        "relax_bfgs_w2", "relax_cg_beta", "bfgs_w1", "bfgs_w2",
-        "cal_force", "relax_new", "out_level", "fixed_axes", "fixed_ibrav",
-        "fixed_atoms",
-    ]),
-    ("Molecular Dynamics", [
-        "md_type", "md_nstep", "md_dt", "md_tauthermo", "md_taubaro",
-        "md_restart", "md_enssolver", "md_thermostat", "md_temp",
-        "md_press", "md_pmode", "md_pcouple",
-    ]),
+    (
+        "Calculation Control",
+        [
+            "calculation",
+            "suffix",
+            "esolver_type",
+            "nbands",
+            "nupdown",
+            "ntype",
+            "nspin",
+            "nelec",
+            "nelec_delta",
+            "lmaxmax",
+        ],
+    ),
+    (
+        "Planewave Basis",
+        [
+            "ecutwfc",
+            "ecutrho",
+            "pw_diag_thr",
+            "pw_diag_nmax",
+            "gamma_only",
+            "gamma_only_local",
+        ],
+    ),
+    (
+        "Numerical Atomic Orbitals",
+        [
+            "basis_type",
+            "lcao_ecut",
+            "lcao_dk",
+            "lcao_dr",
+            "lcao_rmax",
+            "lmax",
+            "lmaxall",
+            "search_radius",
+            "search_pbc",
+        ],
+    ),
+    (
+        "K-points",
+        [
+            "kpoint_file",
+            "kpar",
+            "kspacing",
+            "nupdown",
+        ],
+    ),
+    (
+        "SCF",
+        [
+            "scf_thr",
+            "scf_thr_type",
+            "scf_nmax",
+            "dft_plus_u",
+            "charge_extrap",
+            "out_mul",
+            "symmetry",
+            "init_chg",
+            "chg_extrap",
+            "efield_flag",
+            "dip_cor_flag",
+        ],
+    ),
+    (
+        "Structure",
+        [
+            "stru_file",
+            "latname",
+            "cell_factor",
+        ],
+    ),
+    (
+        "Files and Paths",
+        [
+            "pseudo_dir",
+            "orbital_dir",
+            "read_file_dir",
+        ],
+    ),
+    (
+        "Output",
+        [
+            "out_band",
+            "out_dos",
+            "out_stru",
+            "out_chg",
+            "out_pot",
+            "out_wfc_pw",
+            "out_wfc_r",
+            "out_cube",
+            "out_alllog",
+            "out_app_flag",
+            "out_ndigits",
+            "out_level",
+        ],
+    ),
+    (
+        "Smearing",
+        [
+            "smearing_method",
+            "smearing_sigma",
+            "smearing_temp",
+        ],
+    ),
+    (
+        "Charge Mixing",
+        [
+            "mixing_type",
+            "mixing_beta",
+            "mixing_ndim",
+            "mixing_gg0",
+            "mixing_gg0_coef",
+            "mixing_tau",
+            "mixing_dftu",
+        ],
+    ),
+    (
+        "Relaxation",
+        [
+            "force_thr",
+            "force_thr_ev",
+            "relax_method",
+            "relax_bfgs_w1",
+            "relax_bfgs_w2",
+            "relax_cg_beta",
+            "bfgs_w1",
+            "bfgs_w2",
+            "cal_force",
+            "relax_new",
+            "out_level",
+            "fixed_axes",
+            "fixed_ibrav",
+            "fixed_atoms",
+        ],
+    ),
+    (
+        "Molecular Dynamics",
+        [
+            "md_type",
+            "md_nstep",
+            "md_dt",
+            "md_tauthermo",
+            "md_taubaro",
+            "md_restart",
+            "md_enssolver",
+            "md_thermostat",
+            "md_temp",
+            "md_press",
+            "md_pmode",
+            "md_pcouple",
+        ],
+    ),
 ]
 
 # Build reverse map: keyword -> category index
@@ -95,6 +201,7 @@ class FormatOptions:
 @dataclass
 class _InputLine:
     """Parsed line in an INPUT file."""
+
     kind: str  # "pre_header", "header", "blank", "comment", "entry", "dup_marker"
     raw: str
     key: str = ""
@@ -164,15 +271,19 @@ def _parse_input_lines(text: str) -> list[_InputLine]:
         if stripped.startswith(COMMENT_PREFIXES):
             # Check for dup marker
             if stripped.startswith(DUP_MARKER):
-                rest = stripped[len(DUP_MARKER):].strip()
+                rest = stripped[len(DUP_MARKER) :].strip()
                 parts = rest.split(maxsplit=1)
                 if parts:
                     key = parts[0]
                     value = parts[1] if len(parts) > 1 else ""
-                    result.append(_InputLine(
-                        kind="dup_marker", raw=raw_line,
-                        key=key, value=value,
-                    ))
+                    result.append(
+                        _InputLine(
+                            kind="dup_marker",
+                            raw=raw_line,
+                            key=key,
+                            value=value,
+                        )
+                    )
                     continue
             result.append(_InputLine(kind="comment", raw=raw_line))
             continue
@@ -189,10 +300,15 @@ def _parse_input_lines(text: str) -> list[_InputLine]:
         value = parts[1].strip() if len(parts) > 1 else ""
         inline_comment = f"{sep}{comment}" if sep else ""
 
-        result.append(_InputLine(
-            kind="entry", raw=raw_line,
-            key=key, value=value, inline_comment=inline_comment,
-        ))
+        result.append(
+            _InputLine(
+                kind="entry",
+                raw=raw_line,
+                key=key,
+                value=value,
+                inline_comment=inline_comment,
+            )
+        )
 
     return result
 
@@ -236,9 +352,7 @@ def safe_format_input(text: str) -> str:
                     f"{line.inline_comment}".rstrip()
                 )
             else:
-                formatted.append(
-                    f"{line.key:<{max_key_len}}  {line.value}".rstrip()
-                )
+                formatted.append(f"{line.key:<{max_key_len}}  {line.value}".rstrip())
         elif line.kind == "header":
             formatted.append("INPUT_PARAMETERS")
         else:
@@ -337,10 +451,14 @@ def normalize_format_input(
         if entry.key in seen:
             # Convert earlier entry to dup marker
             old = final_entries[seen[entry.key]]
-            new_dups.append(_InputLine(
-                kind="dup_marker", raw="",
-                key=old.key, value=old.value,
-            ))
+            new_dups.append(
+                _InputLine(
+                    kind="dup_marker",
+                    raw="",
+                    key=old.key,
+                    value=old.value,
+                )
+            )
             # Replace with the later entry
             final_entries[seen[entry.key]] = entry
         else:
@@ -441,8 +559,12 @@ def normalize_format_stru(text: str) -> str:
     lines = text.splitlines()
     formatted: list[str] = []
     KNOWN_SECTIONS = {
-        "ATOMIC_SPECIES", "NUMERICAL_ORBITAL", "LATTICE_CONSTANT",
-        "LATTICE_VECTORS", "LATTICE_PARAMETERS", "ATOMIC_POSITIONS",
+        "ATOMIC_SPECIES",
+        "NUMERICAL_ORBITAL",
+        "LATTICE_CONSTANT",
+        "LATTICE_VECTORS",
+        "LATTICE_PARAMETERS",
+        "ATOMIC_POSITIONS",
     }
 
     prev_was_section = False

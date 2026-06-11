@@ -68,8 +68,7 @@ def test_agent_cli_returns_nonzero_for_blocking_errors(tmp_path: Path, capsys) -
 def test_static_test_cli_and_missing_smoke_backend(capsys) -> None:
     assert cli_test_main(["static", str(FIXTURES / "valid" / "mgo_lcao"), "--json"]) == 0
     assert (
-        cli_test_main(["smoke", str(FIXTURES / "valid" / "mgo_lcao"), "--backend", "pyabacus"])
-        == 1
+        cli_test_main(["smoke", str(FIXTURES / "valid" / "mgo_lcao"), "--backend", "pyabacus"]) == 1
     )
     assert "pyabacus backend is not installed" in capsys.readouterr().out
 
@@ -185,9 +184,7 @@ def test_goto_definition_input_file_refs(tmp_path: Path) -> None:
 
 def test_goto_definition_stru_pseudo(tmp_path: Path) -> None:
     """Go-to-definition on pseudopotential filename in STRU."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\npseudo_dir ./\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\npseudo_dir ./\n", encoding="utf-8")
     (tmp_path / "STRU").write_text(
         "ATOMIC_SPECIES\nSi 28.085 Si.upf\n\nATOMIC_POSITIONS\nDirect\n",
         encoding="utf-8",
@@ -202,9 +199,7 @@ def test_goto_definition_stru_pseudo(tmp_path: Path) -> None:
 
 def test_find_references_input_keyword(tmp_path: Path) -> None:
     """Find all references for a repeated keyword."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\necutwfc 50\necutwfc 100\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\necutwfc 50\necutwfc 100\n", encoding="utf-8")
     input_text = (tmp_path / "INPUT").read_text(encoding="utf-8")
     refs = find_references("INPUT", input_text, 2, 1, tmp_path)
     assert len(refs) == 2
@@ -239,9 +234,7 @@ def test_rename_returns_none_for_unsupported() -> None:
 
 def test_publish_diagnostics(tmp_path: Path) -> None:
     """Publish diagnostics groups by file."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\nbasis_type lcao\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\nbasis_type lcao\n", encoding="utf-8")
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
 
@@ -353,6 +346,7 @@ def test_hover_text_with_and_without_unit() -> None:
 def test_uri_to_filename() -> None:
     """Test URI-to-filename conversion."""
     from abacus_lsp.server import _uri_to_filename
+
     # file:// URI
     assert _uri_to_filename("file:///home/user/project/INPUT") == "INPUT"
     assert _uri_to_filename("file:///home/user/project/STRU") == "STRU"
@@ -370,10 +364,12 @@ def test_register_features_with_pygls() -> None:
     class FakeServer:
         def __init__(self):
             self._features = {}
+
         def feature(self, *args, **kwargs):
             def decorator(func):
                 self._features[func.__name__] = func
                 return func
+
             return decorator
 
     fake = FakeServer()
@@ -396,11 +392,14 @@ def test_register_features_no_lsprotocol(monkeypatch) -> None:
 
     # Simulate lsprotocol not available by patching the import
     import builtins
+
     real_import = builtins.__import__
+
     def mock_import(name, *args, **kwargs):
         if name == "lsprotocol" or name.startswith("lsprotocol"):
             raise ImportError("no lsprotocol")
         return real_import(name, *args, **kwargs)
+
     monkeypatch.setattr(builtins, "__import__", mock_import)
 
     fake = FakeServer()

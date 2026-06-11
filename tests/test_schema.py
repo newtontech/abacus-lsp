@@ -36,9 +36,7 @@ def test_project_override_updates_keyword(tmp_path: Path) -> None:
 
     assert registry.get("ecutwfc") is not None
     assert registry.get("ecutwfc").default == "80"  # type: ignore[union-attr]
-    assert (
-        registry.get("ecutwfc").description == "Project default cutoff"
-    )  # type: ignore[union-attr]
+    assert registry.get("ecutwfc").description == "Project default cutoff"  # type: ignore[union-attr]
 
 
 def test_schema_validation_covers_types_and_enums() -> None:
@@ -47,6 +45,4 @@ def test_schema_validation_covers_types_and_enums() -> None:
     assert validate_keyword_value(registry.get("ecutwfc"), "not-real")  # type: ignore[arg-type]
     assert validate_keyword_value(registry.get("gamma_only"), "maybe")  # type: ignore[arg-type]
     assert validate_keyword_value(registry.get("calculation"), "unknown")  # type: ignore[arg-type]
-    assert (
-        validate_keyword_value(registry.get("calculation"), "scf") is None
-    )  # type: ignore[arg-type]
+    assert validate_keyword_value(registry.get("calculation"), "scf") is None  # type: ignore[arg-type]

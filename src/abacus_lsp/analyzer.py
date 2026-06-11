@@ -96,6 +96,15 @@ def analyze_case(case_dir: Path, registry: SchemaRegistry | None = None) -> list
     diagnostics.extend(_workflow_diagnostics(input_file, kpt_file))
     diagnostics.extend(_apns_diagnostics(stru_file, case_dir))
     diagnostics.extend(_matmaster_diagnostics(input_file, stru_file, kpt_file, case_dir))
+
+    log_path = case_dir / "running.log"
+    if not log_path.exists():
+        log_path = case_dir / "run.log"
+    if not log_path.exists():
+        log_path = case_dir / "OUT.ABACUS" / "running_0.log"
+    if log_path.exists():
+        diagnostics.extend(parse_log(log_path))
+
     return sorted(diagnostics, key=lambda item: (item.file, item.line, item.code))
 
 
@@ -260,12 +269,17 @@ def parse_kpt(path: Path) -> KptFile:
                 )
             )
         result.rows = meaningful[3:]
-        if result.count is not None and result.count > 0 and mode in {
-            "direct",
-            "cartesian",
-            "line",
-            "line_cartesian",
-        }:
+        if (
+            result.count is not None
+            and result.count > 0
+            and mode
+            in {
+                "direct",
+                "cartesian",
+                "line",
+                "line_cartesian",
+            }
+        ):
             if len(result.rows) != result.count:
                 result.diagnostics.append(
                     Diagnostic(
@@ -429,6 +443,36 @@ def _parse_atomic_positions(lines: list[str], index: int, result: StruFile) -> i
             )
         index = first_atom_line + atom_count
     return index
+
+
+def parse_log(path: Path) -> list[Diagnostic]:
+    """Parse an ABACUS runtime log for known error patterns."""
+    diagnostics: list[Diagnostic] = []
+    if not path.exists():
+        return diagnostics
+
+    for line_no, line in enumerate(
+        path.read_text(encoding="utf-8", errors="replace").splitlines(), start=1
+    ):
+        upper = line.upper()
+        if "SCF" in upper and (
+            "NOT CONVERGED" in upper
+            or "CONVERGENCE FAILED" in upper
+            or "CONVERGENCE FAILURE" in upper
+        ):
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS301",
+                    "error",
+                    "SCF convergence failure detected in runtime log",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={"kind": "increase_scf_steps_or_threshold"},
+                    confidence=0.95,
+                )
+            )
+    return diagnostics
 
 
 def _cross_file_diagnostics(
@@ -634,8 +678,10 @@ def _matmaster_diagnostics(
     diagnostics: list[Diagnostic] = []
     min_grid = config.get("min_kpoint_grid")
     actual_grid = _auto_kpt_grid(kpt_file)
-    if min_grid and actual_grid and any(
-        actual < minimum for actual, minimum in zip(actual_grid, min_grid)
+    if (
+        min_grid
+        and actual_grid
+        and any(actual < minimum for actual, minimum in zip(actual_grid, min_grid))
     ):
         diagnostics.append(
             Diagnostic(

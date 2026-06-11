@@ -110,9 +110,7 @@ def test_missing_input_header(tmp_path: Path) -> None:
 
 
 def test_unknown_keyword_warning(tmp_path: Path) -> None:
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\nmy_unknown_param 42\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\nmy_unknown_param 42\n", encoding="utf-8")
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
 
@@ -132,8 +130,7 @@ def test_invalid_kpt_mode(tmp_path: Path) -> None:
 
     kpt_file = parse_kpt(tmp_path / "KPT")
     assert any(
-        d.code == "ABACUS005" and "unknown KPT mode" in d.message
-        for d in kpt_file.diagnostics
+        d.code == "ABACUS005" and "unknown KPT mode" in d.message for d in kpt_file.diagnostics
     )
 
 
@@ -238,9 +235,7 @@ def test_input_with_slash_comments(tmp_path: Path) -> None:
 
 def test_goto_definition_stru_non_numeric_mass(tmp_path: Path) -> None:
     """Go-to-definition on STRU line where column 2 is NOT numeric."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\npseudo_dir ./\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\npseudo_dir ./\n", encoding="utf-8")
     # This STRU line has a non-numeric second column (LATTICE_CONSTANT)
     stru_text = "LATTICE_CONSTANT\n10.2\n"
     defs = goto_definition("STRU", stru_text, 1, 1, tmp_path)
@@ -250,9 +245,7 @@ def test_goto_definition_stru_non_numeric_mass(tmp_path: Path) -> None:
 
 def test_find_references_cross_file_stru(tmp_path: Path) -> None:
     """Find references for stru_file keyword cross-links to STRU."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\nstru_file STRU\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\nstru_file STRU\n", encoding="utf-8")
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
 
@@ -265,9 +258,7 @@ def test_find_references_cross_file_stru(tmp_path: Path) -> None:
 
 def test_find_references_cross_file_kpt(tmp_path: Path) -> None:
     """Find references for kpoint_file keyword cross-links to KPT."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\nkpoint_file KPT\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\nkpoint_file KPT\n", encoding="utf-8")
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
 
@@ -290,9 +281,7 @@ def test_rename_single_occurrence() -> None:
 
 def test_publish_diagnostics_with_errors(tmp_path: Path) -> None:
     """Publish diagnostics on invalid case groups by file."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\nbasis_type lcao\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\nbasis_type lcao\n", encoding="utf-8")
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
 
@@ -310,9 +299,7 @@ def test_publish_diagnostics_with_errors(tmp_path: Path) -> None:
 
 def test_input_nspin_not_integer(tmp_path: Path) -> None:
     """Non-integer nspin value produces type error."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\nnspin abc\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\nnspin abc\n", encoding="utf-8")
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
 
@@ -322,9 +309,7 @@ def test_input_nspin_not_integer(tmp_path: Path) -> None:
 
 def test_input_ecutwfc_negative_valid_type(tmp_path: Path) -> None:
     """Negative number is still a valid real number type-wise."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\necutwfc -50\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\necutwfc -50\n", encoding="utf-8")
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
 
@@ -411,7 +396,9 @@ def test_rule_invalid_input_keyword(tmp_path: Path) -> None:
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
     diagnostics = analyze_case(tmp_path)
     assert any(
-        d.code == "ABACUS002" and "unknown" in d.message.lower() and "zzz_nonexistent_keyword" in d.message
+        d.code == "ABACUS002"
+        and "unknown" in d.message.lower()
+        and "zzz_nonexistent_keyword" in d.message
         for d in diagnostics
     ), f"Expected unknown keyword error, got: {[d.message for d in diagnostics]}"
 
@@ -423,16 +410,13 @@ def test_rule_missing_input_file(tmp_path: Path) -> None:
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
     diagnostics = analyze_case(tmp_path)
     assert any(
-        d.severity == "error" and "INPUT file is missing" in d.message
-        for d in diagnostics
+        d.severity == "error" and "INPUT file is missing" in d.message for d in diagnostics
     ), f"Expected missing INPUT error, got: {[d.message for d in diagnostics]}"
 
 
 def test_rule_missing_stru_file(tmp_path: Path) -> None:
     """RULE abacus.files.missing_stru: error when STRU file is absent."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\ncalculation scf\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\ncalculation scf\n", encoding="utf-8")
     # No STRU file - use non-default name to avoid auto-STRU
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
     diagnostics = analyze_case(tmp_path)
@@ -450,10 +434,9 @@ def test_rule_invalid_input_value(tmp_path: Path) -> None:
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
     diagnostics = analyze_case(tmp_path)
-    assert any(
-        d.code == "ABACUS101" and d.severity == "error"
-        for d in diagnostics
-    ), f"Expected invalid value error (ABACUS101), got: {[d.message for d in diagnostics]}"
+    assert any(d.code == "ABACUS101" and d.severity == "error" for d in diagnostics), (
+        f"Expected invalid value error (ABACUS101), got: {[d.message for d in diagnostics]}"
+    )
 
 
 def test_rule_species_orbital_mismatch(tmp_path: Path) -> None:
@@ -489,9 +472,7 @@ def test_si_pw_goto_definition_stru_file(tmp_path: Path) -> None:
         "INPUT_PARAMETERS\nstru_file custom_stru\ncalculation scf\n",
         encoding="utf-8",
     )
-    (tmp_path / "custom_stru").write_text(
-        "ATOMIC_POSITIONS\nDirect\n", encoding="utf-8"
-    )
+    (tmp_path / "custom_stru").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
 
     input_text = (tmp_path / "INPUT").read_text(encoding="utf-8")
@@ -524,14 +505,26 @@ def test_rule_missing_pseudopotential(tmp_path: Path) -> None:
 
 def test_rule_kpt_malformed_grid(tmp_path: Path) -> None:
     """RULE abacus.kpt.malformed_grid: error on malformed KPT grid."""
-    (tmp_path / "INPUT").write_text(
-        "INPUT_PARAMETERS\ncalculation scf\n", encoding="utf-8"
-    )
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\ncalculation scf\n", encoding="utf-8")
     (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
     # KPT with invalid mode (not a recognized mode)
     (tmp_path / "KPT").write_text("K_POINTS\n0\nInvalidMode\nabc\n", encoding="utf-8")
     diagnostics = analyze_case(tmp_path)
-    assert any(
-        d.code == "ABACUS005" and d.severity == "error"
-        for d in diagnostics
-    ), f"Expected malformed KPT grid error (ABACUS005), got: {[d.message for d in diagnostics]}"
+    assert any(d.code == "ABACUS005" and d.severity == "error" for d in diagnostics), (
+        f"Expected malformed KPT grid error (ABACUS005), got: {[d.message for d in diagnostics]}"
+    )
+
+
+def test_rule_scf_not_converged(tmp_path: Path) -> None:
+    """RULE abacus.log.scf_not_converged: error on SCF convergence failure in log."""
+    (tmp_path / "INPUT").write_text("INPUT_PARAMETERS\ncalculation scf\n", encoding="utf-8")
+    (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
+    (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
+    (tmp_path / "running.log").write_text(
+        "SCF iteration 1\nSCF iteration 2\nSCF is NOT converged!\n",
+        encoding="utf-8",
+    )
+    diagnostics = analyze_case(tmp_path)
+    assert any(d.code == "ABACUS301" and d.severity == "error" for d in diagnostics), (
+        f"Expected SCF not converged error (ABACUS301), got: {[d.message for d in diagnostics]}"
+    )

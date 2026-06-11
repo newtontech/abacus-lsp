@@ -1,0 +1,6 @@
+{
+  "rule_id": "abacus.log.scf_not_converged",
+  "diagnostic_code": "ABACUS301",
+  "severity": "error",
+  "message_pattern": "SCF convergence failure"
+}

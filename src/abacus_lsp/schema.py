@@ -328,4 +328,3 @@ def validate_keyword_value(keyword: KeywordSchema, value: str) -> str | None:
         if first.lower() not in {item.lower() for item in keyword.enum}:
             return f"{keyword.name} expects one of: {', '.join(keyword.enum)}"
     return None
-

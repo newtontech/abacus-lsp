@@ -11,6 +11,7 @@ from .schema import SchemaRegistry
 # Completion
 # ---------------------------------------------------------------------------
 
+
 def completion_items(filename: str) -> list[str]:
     upper = filename.upper()
     if upper == "INPUT":
@@ -33,6 +34,7 @@ def completion_items(filename: str) -> list[str]:
 # Hover
 # ---------------------------------------------------------------------------
 
+
 def hover_text(keyword: str) -> str | None:
     item = SchemaRegistry.builtin().get(keyword)
     if item is None:
@@ -45,6 +47,7 @@ def hover_text(keyword: str) -> str | None:
 # ---------------------------------------------------------------------------
 # Document symbols
 # ---------------------------------------------------------------------------
+
 
 def document_symbols(filename: str, text: str) -> list[dict[str, Any]]:
     symbols = []
@@ -62,6 +65,7 @@ def document_symbols(filename: str, text: str) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 # Folding ranges
 # ---------------------------------------------------------------------------
+
 
 def folding_ranges(filename: str, text: str) -> list[dict[str, int]]:
     symbols = document_symbols(filename, text)
@@ -84,6 +88,7 @@ def folding_ranges(filename: str, text: str) -> list[dict[str, int]]:
 # Code actions
 # ---------------------------------------------------------------------------
 
+
 def code_actions(case_dir: Path) -> list[dict[str, Any]]:
     actions = []
     for diagnostic in analyze_case(case_dir):
@@ -103,6 +108,7 @@ def code_actions(case_dir: Path) -> list[dict[str, Any]]:
 # Formatting
 # ---------------------------------------------------------------------------
 
+
 def format_document(filename: str, text: str, normalize: bool = False) -> str:
     return format_file_text(filename, text, FormatOptions(normalize=normalize))
 
@@ -111,8 +117,13 @@ def format_document(filename: str, text: str, normalize: bool = False) -> str:
 # Navigation: go-to-definition
 # ---------------------------------------------------------------------------
 
+
 def goto_definition(
-    filename: str, text: str, line: int, character: int, case_dir: Path | None = None,
+    filename: str,
+    text: str,
+    line: int,
+    character: int,
+    case_dir: Path | None = None,
 ) -> list[dict[str, Any]]:
     """Return definition locations for the symbol at *line*/*character*.
 
@@ -141,9 +152,7 @@ def goto_definition(
         if key in _FILE_REF_KEYS and case_dir is not None:
             target = case_dir / value
             if target.exists():
-                results.append(
-                    {"uri": str(target), "line": 1, "character": 1}
-                )
+                results.append({"uri": str(target), "line": 1, "character": 1})
         elif key in _FILE_REF_KEYS and value:
             # Without case_dir, still return a symbolic reference
             results.append({"uri": value, "line": 1, "character": 1})
@@ -160,9 +169,7 @@ def goto_definition(
                     float(parts[1])  # mass is numeric
                     target = case_dir / pseudo_dir / parts[2]
                     if target.exists():
-                        results.append(
-                            {"uri": str(target), "line": 1, "character": 1}
-                        )
+                        results.append({"uri": str(target), "line": 1, "character": 1})
                 except ValueError:
                     pass
 
@@ -176,8 +183,13 @@ _FILE_REF_KEYS = {"stru_file", "kpoint_file", "pseudo_dir", "orbital_dir", "read
 # Navigation: references
 # ---------------------------------------------------------------------------
 
+
 def find_references(
-    filename: str, text: str, line: int, character: int, case_dir: Path | None = None,
+    filename: str,
+    text: str,
+    line: int,
+    character: int,
+    case_dir: Path | None = None,
 ) -> list[dict[str, Any]]:
     """Return all reference locations for the symbol at *line*/*character*.
 
@@ -203,9 +215,7 @@ def find_references(
         for ln, ln_text in enumerate(lines, start=1):
             s = ln_text.strip()
             if s and not s.startswith(("#", "/")) and s.split()[0].lower() == key:
-                results.append(
-                    {"uri": filename, "line": ln, "character": 1}
-                )
+                results.append({"uri": filename, "line": ln, "character": 1})
         # Cross-file: if keyword is stru_file/kpoint_file, reference the file itself
         if case_dir is not None:
             if key == "stru_file":
@@ -225,9 +235,7 @@ def find_references(
         for ln, ln_text in enumerate(lines, start=1):
             s = ln_text.strip().upper()
             if s == token:
-                results.append(
-                    {"uri": filename, "line": ln, "character": 1}
-                )
+                results.append({"uri": filename, "line": ln, "character": 1})
 
     return results
 
@@ -236,8 +244,13 @@ def find_references(
 # Rename
 # ---------------------------------------------------------------------------
 
+
 def rename_symbol(
-    filename: str, text: str, line: int, character: int, new_name: str,
+    filename: str,
+    text: str,
+    line: int,
+    character: int,
+    new_name: str,
 ) -> dict[str, Any] | None:
     """Return a workspace edit that renames the symbol at *line*/*character*.
 
@@ -264,12 +277,14 @@ def rename_symbol(
             if s and not s.startswith(("#", "/")) and s.split()[0] == old_key:
                 col = ln_text.lower().find(old_key.lower())
                 if col >= 0:
-                    edits.append({
-                        "line": ln,
-                        "startChar": col + 1,
-                        "endChar": col + 1 + len(old_key),
-                        "newText": new_name,
-                    })
+                    edits.append(
+                        {
+                            "line": ln,
+                            "startChar": col + 1,
+                            "endChar": col + 1 + len(old_key),
+                            "newText": new_name,
+                        }
+                    )
         if edits:
             changes[filename] = edits
             return {"changes": changes}
@@ -280,6 +295,7 @@ def rename_symbol(
 # ---------------------------------------------------------------------------
 # Diagnostics (LSP publish)
 # ---------------------------------------------------------------------------
+
 
 def publish_diagnostics(case_dir: Path) -> dict[str, list[dict[str, Any]]]:
     """Return diagnostics grouped by file URI for LSP publishDiagnostics."""
@@ -293,6 +309,7 @@ def publish_diagnostics(case_dir: Path) -> dict[str, list[dict[str, Any]]]:
 # ---------------------------------------------------------------------------
 # LSP Server entry point
 # ---------------------------------------------------------------------------
+
 
 def run_stdio() -> int:
     try:
@@ -325,6 +342,7 @@ def _register_features(server: Any) -> None:
     try:
         from lsprotocol import types as _lsp
     except ImportError:
+
         class _FallbackLsp:
             TEXT_DOCUMENT_COMPLETION = "textDocument/completion"
             TEXT_DOCUMENT_HOVER = "textDocument/hover"
@@ -341,10 +359,7 @@ def _register_features(server: Any) -> None:
         uri = params.text_document.uri
         filename = _uri_to_filename(uri)
         items = completion_items(filename)
-        return [
-            lsp.CompletionItem(label=item)
-            for item in items
-        ]
+        return [lsp.CompletionItem(label=item) for item in items]
 
     @server.feature(lsp.TEXT_DOCUMENT_HOVER)  # type: ignore[untyped-decorator]
     def hover(params: Any) -> Any:
@@ -361,9 +376,7 @@ def _register_features(server: Any) -> None:
         text = hover_text(token)
         if text is None:
             return None
-        return lsp.Hover(
-            contents=lsp.MarkupContent(kind=lsp.MarkupKind.Markdown, value=text)
-        )
+        return lsp.Hover(contents=lsp.MarkupContent(kind=lsp.MarkupKind.Markdown, value=text))
 
     @server.feature(lsp.TEXT_DOCUMENT_DOCUMENT_SYMBOL)  # type: ignore[untyped-decorator]
     def symbols(params: Any) -> Any:
@@ -375,9 +388,7 @@ def _register_features(server: Any) -> None:
             lsp.DocumentSymbol(
                 name=s["name"],
                 kind=(
-                    lsp.SymbolKind.Field
-                    if s["kind"] == "parameter"
-                    else lsp.SymbolKind.Namespace
+                    lsp.SymbolKind.Field if s["kind"] == "parameter" else lsp.SymbolKind.Namespace
                 ),
                 range=lsp.Range(
                     start=lsp.Position(line=s["line"] - 1, character=0),
@@ -431,8 +442,9 @@ def _uri_to_filename(uri: str) -> str:
         path = uri.split("://", 1)[1]
         # Remove authority (e.g. host) if present
         if "/" in path:
-            path = path[path.index("/"):]
+            path = path[path.index("/") :]
         from urllib.parse import unquote
+
         path = unquote(path)
         return Path(path).name
     return Path(uri).name
