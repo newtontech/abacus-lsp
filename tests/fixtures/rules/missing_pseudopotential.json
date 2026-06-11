@@ -1,0 +1,6 @@
+{
+  "rule_id": "abacus.files.missing_pseudopotential",
+  "diagnostic_code": "ABACUS204",
+  "severity": "warning",
+  "message_pattern": "file does not exist"
+}

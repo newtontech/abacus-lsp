@@ -500,6 +500,28 @@ def test_si_pw_goto_definition_stru_file(tmp_path: Path) -> None:
     assert "custom_stru" in defs[0]["uri"]
 
 
+def test_rule_missing_pseudopotential(tmp_path: Path) -> None:
+    """RULE abacus.files.missing_pseudopotential: error when pseudo file doesn't exist."""
+    pseudo_dir = tmp_path / "pseudo"
+    pseudo_dir.mkdir()
+    # Only create one pseudo, but reference two in ATOMIC_SPECIES
+    (pseudo_dir / "Si.upf").write_text("pseudo", encoding="utf-8")
+    (tmp_path / "INPUT").write_text(
+        "INPUT_PARAMETERS\ncalculation scf\npseudo_dir pseudo\n", encoding="utf-8"
+    )
+    (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
+    (tmp_path / "STRU").write_text(
+        "ATOMIC_SPECIES\nSi 28.086 Si.upf\nO 15.999 MISSING.upf\n"
+        "ATOMIC_POSITIONS\nDirect\nSi\n0.0\n0.0 0.0 0.0 0 0 0\n",
+        encoding="utf-8",
+    )
+    diagnostics = analyze_case(tmp_path)
+    assert any(
+        d.code == "ABACUS204" and "MISSING.upf" in d.message
+        for d in diagnostics
+    ), f"Expected missing pseudopotential error, got: {[d.message for d in diagnostics]}"
+
+
 def test_rule_kpt_malformed_grid(tmp_path: Path) -> None:
     """RULE abacus.kpt.malformed_grid: error on malformed KPT grid."""
     (tmp_path / "INPUT").write_text(
