@@ -442,6 +442,21 @@ def test_rule_missing_stru_file(tmp_path: Path) -> None:
     ), f"Expected missing STRU error, got: {[d.message for d in diagnostics]}"
 
 
+def test_rule_invalid_input_value(tmp_path: Path) -> None:
+    """RULE abacus.input.invalid_value: error on invalid INPUT value."""
+    (tmp_path / "INPUT").write_text(
+        "INPUT_PARAMETERS\ncalculation not_a_real_calc\n", encoding="utf-8"
+    )
+    (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
+    (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
+    diagnostics = analyze_case(tmp_path)
+    assert any(
+        d.code == "ABACUS101" and d.severity == "error"
+        for d in diagnostics
+    ), f"Expected invalid value error (ABACUS101), got: {[d.message for d in diagnostics]}"
+
+
+
 def test_si_pw_goto_definition_stru_file(tmp_path: Path) -> None:
     """Go-to-definition on stru_file in INPUT navigates to the STRU file."""
     # Use the si_pw fixture path as case_dir
