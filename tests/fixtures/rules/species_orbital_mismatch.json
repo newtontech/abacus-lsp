@@ -1,0 +1,6 @@
+{
+  "rule_id": "abacus.stru.species_orbital_mismatch",
+  "diagnostic_code": "ABACUS206",
+  "severity": "warning",
+  "message_pattern": "NUMERICAL_ORBITAL count differs"
+}
