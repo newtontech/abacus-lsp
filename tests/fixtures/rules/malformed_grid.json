@@ -1,0 +1,6 @@
+{
+  "rule_id": "abacus.kpt.malformed_grid",
+  "diagnostic_code": "ABACUS005",
+  "severity": "error",
+  "message_pattern": "unknown KPT mode"
+}
