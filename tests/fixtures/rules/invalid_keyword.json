@@ -1,0 +1,6 @@
+{
+  "rule_id": "abacus.input.invalid_keyword",
+  "diagnostic_code": "ABACUS002",
+  "severity": "warning",
+  "message_pattern": "unknown INPUT keyword"
+}

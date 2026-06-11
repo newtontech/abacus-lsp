@@ -402,6 +402,20 @@ def test_si_pw_stru_folding_ranges() -> None:
     assert ranges[0]["startLine"] == 0
 
 
+def test_rule_invalid_input_keyword(tmp_path: Path) -> None:
+    """RULE abacus.input.invalid_keyword: error on unknown INPUT keyword."""
+    (tmp_path / "INPUT").write_text(
+        "INPUT_PARAMETERS\nzzz_nonexistent_keyword 42\n", encoding="utf-8"
+    )
+    (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
+    (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
+    diagnostics = analyze_case(tmp_path)
+    assert any(
+        d.code == "ABACUS002" and "unknown" in d.message.lower() and "zzz_nonexistent_keyword" in d.message
+        for d in diagnostics
+    ), f"Expected unknown keyword error, got: {[d.message for d in diagnostics]}"
+
+
 def test_rule_missing_input_file(tmp_path: Path) -> None:
     """RULE abacus.files.missing_input: error when INPUT file is absent."""
     # No INPUT file created, only STRU and KPT
