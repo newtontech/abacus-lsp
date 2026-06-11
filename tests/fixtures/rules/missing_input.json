@@ -1,0 +1,6 @@
+{
+  "rule_id": "abacus.files.missing_input",
+  "diagnostic_code": "ABACUS201",
+  "severity": "error",
+  "message_pattern": "INPUT file is missing"
+}
