@@ -7,6 +7,8 @@ from .analyzer import analyze_case, parse_input
 from .formatter import FormatOptions, format_file_text
 from .schema import SchemaRegistry
 
+_FILE_REF_KEYS = {"stru_file", "kpoint_file", "pseudo_dir", "orbital_dir", "read_file_dir"}
+
 # ---------------------------------------------------------------------------
 # Completion
 # ---------------------------------------------------------------------------
@@ -28,6 +30,56 @@ def completion_items(filename: str) -> list[str]:
     if upper == "KPT":
         return ["Gamma", "MP", "Direct", "Cartesian", "Line", "Line_Cartesian"]
     return []
+
+
+def completion_values(keyword: str) -> list[str]:
+    """Return value completions for a known INPUT keyword.
+
+    For enum keywords, returns the allowed values.
+    For Boolean keywords, returns common boolean representations.
+    For other typed keywords, returns an empty list (no canned suggestions).
+    """
+    registry = SchemaRegistry.builtin()
+    entry = registry.get(keyword)
+    if entry is None:
+        return []
+    if entry.enum is not None:
+        return list(entry.enum)
+    if entry.type == "Boolean":
+        return ["0", "1", "true", "false"]
+    return []
+
+
+def completion_file_hints(keyword: str, case_dir: Path) -> list[str]:
+    """Return file-aware completions for path-type INPUT keywords.
+
+    Suggests existing files in the case directory that match the expected
+    file type for the given keyword (e.g. .stru files for ``stru_file``).
+    """
+    key = keyword.lower()
+    if key not in _FILE_REF_KEYS:
+        return []
+
+    hints: list[str] = []
+    if not case_dir.is_dir():
+        return []
+
+    if key == "stru_file":
+        for p in case_dir.iterdir():
+            name = p.name
+            if p.is_file() and (name.upper() == "STRU" or name.endswith(".stru")):
+                hints.append(name)
+    elif key == "kpoint_file":
+        for p in case_dir.iterdir():
+            name = p.name
+            if p.is_file() and (name.upper() == "KPT" or name.endswith(".kpt")):
+                hints.append(name)
+    elif key in ("pseudo_dir", "orbital_dir", "read_file_dir"):
+        for p in case_dir.iterdir():
+            name = p.name
+            if p.is_dir():
+                hints.append(name + "/")
+    return sorted(hints)
 
 
 # ---------------------------------------------------------------------------
@@ -174,9 +226,6 @@ def goto_definition(
                     pass
 
     return results
-
-
-_FILE_REF_KEYS = {"stru_file", "kpoint_file", "pseudo_dir", "orbital_dir", "read_file_dir"}
 
 
 # ---------------------------------------------------------------------------
