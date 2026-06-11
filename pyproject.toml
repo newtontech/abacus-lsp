@@ -47,6 +47,7 @@ abacus-lsp = "abacus_lsp.cli:lsp_main"
 abacus-lint = "abacus_lsp.cli:lint_main"
 abacus-fmt = "abacus_lsp.cli:fmt_main"
 abacus-test = "abacus_lsp.cli:test_main"
+abacus-lsp-tool = "abacus_lsp.tool:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/abacus_lsp"]
@@ -68,3 +69,4 @@ select = ["E", "F", "I", "B", "UP"]
 [tool.mypy]
 python_version = "3.9"
 strict = true
+
