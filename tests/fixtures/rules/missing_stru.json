@@ -1,0 +1,6 @@
+{
+  "rule_id": "abacus.files.missing_stru",
+  "diagnostic_code": "ABACUS201",
+  "severity": "error",
+  "message_pattern": "STRU file is missing"
+}
