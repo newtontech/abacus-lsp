@@ -498,3 +498,18 @@ def test_si_pw_goto_definition_stru_file(tmp_path: Path) -> None:
     defs = goto_definition("INPUT", input_text, 2, 1, tmp_path)
     assert len(defs) >= 1
     assert "custom_stru" in defs[0]["uri"]
+
+
+def test_rule_kpt_malformed_grid(tmp_path: Path) -> None:
+    """RULE abacus.kpt.malformed_grid: error on malformed KPT grid."""
+    (tmp_path / "INPUT").write_text(
+        "INPUT_PARAMETERS\ncalculation scf\n", encoding="utf-8"
+    )
+    (tmp_path / "STRU").write_text("ATOMIC_POSITIONS\nDirect\n", encoding="utf-8")
+    # KPT with invalid mode (not a recognized mode)
+    (tmp_path / "KPT").write_text("K_POINTS\n0\nInvalidMode\nabc\n", encoding="utf-8")
+    diagnostics = analyze_case(tmp_path)
+    assert any(
+        d.code == "ABACUS005" and d.severity == "error"
+        for d in diagnostics
+    ), f"Expected malformed KPT grid error (ABACUS005), got: {[d.message for d in diagnostics]}"
