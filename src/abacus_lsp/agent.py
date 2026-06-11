@@ -17,6 +17,39 @@ EXPLANATIONS = {
         "summary": "gamma_only overrides normal KPT sampling.",
         "next_action": "edit INPUT or KPT",
     },
+    "ABACUS301": {
+        "summary": "SCF convergence failed during the self-consistent field iteration.",
+        "next_action": "increase scf_nmax or relax scf_thr in INPUT",
+    },
+    "ABACUS302": {
+        "summary": "Geometry optimization did not converge within the allowed steps.",
+        "next_action": "increase relax_nstep or adjust BFGS parameters",
+    },
+    "ABACUS303": {
+        "summary": "A segmentation fault occurred during ABACUS execution.",
+        "next_action": "check INPUT parameters or reduce system size",
+    },
+    "ABACUS304": {
+        "summary": "A file error was detected in the runtime log.",
+        "next_action": "verify all file paths in INPUT (pseudo_dir, orbital_dir, etc.)",
+    },
+    "ABACUS309": {
+        "summary": "Memory allocation failed during ABACUS execution.",
+        "next_action": "reduce system size, lower ecutwfc, or increase available memory",
+    },
+}
+
+CAPABILITIES = {
+    "log_parser": {
+        "patterns": [
+            "scf_not_converged",
+            "geometry_not_converged",
+            "segfault",
+            "file_error",
+            "memory_allocation_error",
+        ],
+        "log_paths": ["running.log", "run.log", "OUT.ABACUS/running_0.log"],
+    },
 }
 
 

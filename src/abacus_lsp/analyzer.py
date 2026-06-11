@@ -446,7 +446,15 @@ def _parse_atomic_positions(lines: list[str], index: int, result: StruFile) -> i
 
 
 def parse_log(path: Path) -> list[Diagnostic]:
-    """Parse an ABACUS runtime log for known error patterns."""
+    """Parse an ABACUS runtime log for known error patterns.
+
+    Detects:
+      - ABACUS301: SCF convergence failure
+      - ABACUS302: Geometry optimization not converged
+      - ABACUS303: Segfault detected
+      - ABACUS304: File error in log
+      - ABACUS309: Memory allocation error
+    """
     diagnostics: list[Diagnostic] = []
     if not path.exists():
         return diagnostics
@@ -470,6 +478,60 @@ def parse_log(path: Path) -> list[Diagnostic]:
                     evidence=[line.strip()],
                     suggested_fix={"kind": "increase_scf_steps_or_threshold"},
                     confidence=0.95,
+                )
+            )
+        if "GEOMETRY" in upper and (
+            "NOT CONVERGED" in upper or "CONVERGENCE FAILED" in upper
+        ):
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS302",
+                    "error",
+                    "Geometry optimization did not converge",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={"kind": "increase_relax_steps_or_adjust_bfgs"},
+                    confidence=0.90,
+                )
+            )
+        if "SEGFAULT" in upper or "SEGMENTATION FAULT" in upper:
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS303",
+                    "error",
+                    "Segfault detected in runtime log",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={"kind": "check_input_or_reduce_system_size"},
+                    confidence=0.95,
+                )
+            )
+        if "ERROR" in upper and ("OPEN" in upper or "FILE" in upper):
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS304",
+                    "error",
+                    f"File error in log: {line.strip()}",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={"kind": "verify_file_paths_in_input"},
+                    confidence=0.85,
+                )
+            )
+        if "ALLOCATE" in upper and "ERROR" in upper:
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS309",
+                    "error",
+                    "Memory allocation error in runtime log",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={"kind": "reduce_memory_usage_or_increase_resources"},
+                    confidence=0.90,
                 )
             )
     return diagnostics
