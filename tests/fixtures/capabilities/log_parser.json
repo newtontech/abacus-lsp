@@ -1,0 +1,11 @@
+{
+  "capability_id": "log_parser",
+  "log_paths": ["running.log", "run.log", "OUT.ABACUS/running_0.log"],
+  "patterns": [
+    "scf_not_converged",
+    "geometry_not_converged",
+    "segfault",
+    "file_error",
+    "memory_allocation_error"
+  ]
+}
