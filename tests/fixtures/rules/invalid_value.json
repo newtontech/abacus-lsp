@@ -1,0 +1,6 @@
+{
+  "rule_id": "abacus.input.invalid_value",
+  "diagnostic_code": "ABACUS101",
+  "severity": "error",
+  "message_pattern": "invalid"
+}
