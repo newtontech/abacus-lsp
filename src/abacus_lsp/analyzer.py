@@ -480,9 +480,7 @@ def parse_log(path: Path) -> list[Diagnostic]:
                     confidence=0.95,
                 )
             )
-        if "GEOMETRY" in upper and (
-            "NOT CONVERGED" in upper or "CONVERGENCE FAILED" in upper
-        ):
+        if "GEOMETRY" in upper and ("NOT CONVERGED" in upper or "CONVERGENCE FAILED" in upper):
             diagnostics.append(
                 Diagnostic(
                     "ABACUS302",
