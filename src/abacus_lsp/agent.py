@@ -50,9 +50,6 @@ CAPABILITIES = {
         ],
         "log_paths": ["running.log", "run.log", "OUT.ABACUS/running_0.log"],
     },
-}
-
-CAPABILITIES = {
     "agent_tools_backend": {
         "optional": True,
         "description": "ABACUS-agent-tools for advanced validation and execution",
