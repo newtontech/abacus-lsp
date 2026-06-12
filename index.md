@@ -15,9 +15,9 @@
 ## 快速导航 / Quick Navigation
 
 ### 核心实体 / Core Entities
-- [[ABACUS_INPUT]] - INPUT 文件格式和参数
-- [[ABACUS_STRU]] - STRU 结构文件
-- [[ABACUS_KPT]] - K 点文件
+- [[ABACUS_INPUT]] - INPUT 文件格式和参数 (400+ 参数完整参考)
+- [[ABACUS_STRU]] - STRU 结构文件 (完整格式规范)
+- [[ABACUS_KPT]] - K 点文件 (MP/Gamma/显式/Line 模式)
 - [[Diagnostic]] - 诊断数据结构
 - [[KeywordSchema]] - 关键字模式
 - [[SchemaRegistry]] - 模式注册表
@@ -33,6 +33,7 @@
 - [[Spin_Polarization]] - 自旋极化
 - [[K_Point_Generation]] - K 点生成
 - [[Pseudopotentials]] - 赝势
+- [[Pseudopotential_Sources]] - 赝势来源与格式 (NEW)
 - [[Numerical_Orbitals]] - 数值轨道
 - [[Formatter]] - 格式化器
 - [[LSP_Server]] - 语言服务器
@@ -43,6 +44,7 @@
 - [[CLI_Reference]] - 命令行接口参考
 - [[Project_Configuration]] - 项目配置
 - [[Log_Parsing]] - 日志解析
+- [[Examples_and_Tutorials]] - 示例与教程 (NEW)
 - [[Roadmap]] - 开发路线图
 
 ---
@@ -65,12 +67,30 @@
 ### 电子结构概念 / Electronic Structure
 - [[Basis_Set_Types]] | [[DFT_Plus_U]] | [[Spin_Polarization]]
 - [[K_Point_Generation]] | [[Pseudopotentials]] | [[Numerical_Orbitals]]
+- [[Pseudopotential_Sources]] - 赝势格式、SOC 要求、下载来源
+
+### 学习资源 / Learning Resources
+- [[Examples_and_Tutorials]] - 官方示例、教程结构、接口集成
 
 ### 工具和接口 / Tools & Interfaces
 - [[LSP_Server]] | [[Formatter]] | [[CLI_Reference]]
 
 ### 项目管理 / Project Management
 - [[Project_Configuration]] | [[Roadmap]]
+
+---
+
+## 原始文档 / Raw Assets
+
+### ABACUS 上游文档 (来自 abacus.deepmodeling.com)
+- `raw/assets/abacus-readme.md` - GitHub README
+- `raw/assets/abacus-input-reference.md` - 完整 INPUT 参数参考 (400+ 参数)
+- `raw/assets/abacus-stru-format.md` - STRU 文件格式规范
+- `raw/assets/abacus-kpt-format.md` - KPT 文件格式规范
+- `raw/assets/abacus-pseudopotentials-orbitals.md` - 赝势与基组文档
+- `raw/assets/abacus-examples.md` - SCF 和几何优化示例
+- `raw/assets/abacus-quickstart-inputs.md` - 输入文件快速入门
+- `raw/assets/abacus-tutorials.md` - 教程资源和学习材料汇总
 
 ---
 

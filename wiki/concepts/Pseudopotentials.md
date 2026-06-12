@@ -75,16 +75,27 @@ for directory_key, filenames in {
 ### 标准赝势 (NCPP)
 - Norm-conserving
 - 适合一般用途
+- 格式: UPF, UPF2, VWR, BLPS
 
 ### 超软赝势 (USPP)
 - Ultra-soft
 - 减少截断能量需求
+- 格式: UPF, UPF2
+- 约束: 全相对论 USPP 必须配合 `lspinorb=true`
 
-### PAW 势
-- Projector Augmented Wave
-- 精度最高
+### SOC 赝势
+- 必须为全相对论 (`relativistic="full"`, `has_so="T"`)
+- SOC 计算 (`lspinorb=1`) 必须使用
+- 来源: SG15_ONCV, PseudoDOJO, ABACUS 官方
+
+### 下载来源
+- SG15: ABACUS 广泛使用
+- PseudoDOJO: 含镧系
+- GBRV: 超软赝势，QE 社区流行
+- APNS 项目: 官方推荐 (APNSv1.0)
 
 ## 相关概念
+- [[Pseudopotential_Sources]] - 详细的赝势来源与格式
 - [[ABACUS_STRU]]
 - [[Cross_File_Diagnostics]]
 - [[APNS]]
