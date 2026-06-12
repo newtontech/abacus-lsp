@@ -1,0 +1,42 @@
+{
+  "abacus_version": "builtin",
+  "schema_version": "abacus-lsp-schema-v1",
+  "keywords": [
+    {
+      "availability": [
+        "PW",
+        "LCAO"
+      ],
+      "category": "System",
+      "default": "scf",
+      "description": "Calculation type.",
+      "enum": [
+        "scf",
+        "relax",
+        "cell-relax",
+        "md",
+        "nscf",
+        "get_wf",
+        "get_pchg"
+      ],
+      "name": "calculation",
+      "source": "builtin",
+      "type": "Enum",
+      "unit": null
+    },
+    {
+      "availability": [
+        "PW",
+        "LCAO"
+      ],
+      "category": "Plane wave",
+      "default": "50",
+      "description": "Energy cutoff for plane wave functions.",
+      "enum": null,
+      "name": "ecutwfc",
+      "source": "builtin",
+      "type": "Real",
+      "unit": "Ry"
+    }
+  ]
+}
