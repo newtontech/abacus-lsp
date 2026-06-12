@@ -12,7 +12,6 @@ from pathlib import Path
 
 from abacus_lsp.server import completion_file_hints, completion_items, completion_values
 
-
 # ---------------------------------------------------------------------------
 # completion_items
 # ---------------------------------------------------------------------------
