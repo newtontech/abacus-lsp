@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from abacus_lsp.analyzer import analyze_case, parse_log
 from abacus_lsp.agent import CAPABILITIES
-
+from abacus_lsp.analyzer import analyze_case, parse_log
 
 # ---------------------------------------------------------------------------
 # parse_log unit tests
