@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "abacus-lsp"
+version = "0.1.0"
+description = "Language Server Protocol and CLI tools for ABACUS INPUT, STRU, and KPT files"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "newtontech" }]
+keywords = ["abacus", "lsp", "language-server", "materials-science", "dft"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Text Editors :: Integrated Development Environments (IDE)",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4.0",
+    "mypy>=1.8",
+]
+lsp = [
+    "pygls>=1.2.0",
+    "lsprotocol>=2023.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/newtontech/abacus-lsp"
+Issues = "https://github.com/newtontech/abacus-lsp/issues"
+
+[project.scripts]
+abacus-schema = "abacus_lsp.cli:schema_main"
+abacus-lsp = "abacus_lsp.cli:lsp_main"
+abacus-lint = "abacus_lsp.cli:lint_main"
+abacus-fmt = "abacus_lsp.cli:fmt_main"
+abacus-test = "abacus_lsp.cli:test_main"
+abacus-lsp-tool = "abacus_lsp.tool:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/abacus_lsp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src/abacus_lsp --cov-report=term-missing --cov-fail-under=80 -v"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/create_roadmap_issues.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+
