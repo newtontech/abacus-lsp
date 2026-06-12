@@ -497,10 +497,9 @@ def test_rule_missing_pseudopotential(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     diagnostics = analyze_case(tmp_path)
-    assert any(
-        d.code == "ABACUS204" and "MISSING.upf" in d.message
-        for d in diagnostics
-    ), f"Expected missing pseudopotential error, got: {[d.message for d in diagnostics]}"
+    assert any(d.code == "ABACUS204" and "MISSING.upf" in d.message for d in diagnostics), (
+        f"Expected missing pseudopotential error, got: {[d.message for d in diagnostics]}"
+    )
 
 
 def test_rule_kpt_malformed_grid(tmp_path: Path) -> None:
