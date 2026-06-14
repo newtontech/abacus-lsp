@@ -1,0 +1,7 @@
+INPUT_PARAMETERS
+suffix      pw_with_orbital_dir
+calculation scf
+basis_type  pw
+orbital_dir ./
+ecutwfc     60
+scf_thr     1e-6

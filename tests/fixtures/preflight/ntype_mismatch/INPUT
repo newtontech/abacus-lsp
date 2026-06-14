@@ -1,0 +1,7 @@
+INPUT_PARAMETERS
+suffix      mismatch
+calculation scf
+basis_type  pw
+ntype       1
+ecutwfc     60
+scf_thr     1e-6

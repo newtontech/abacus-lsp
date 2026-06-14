@@ -1,0 +1,8 @@
+INPUT_PARAMETERS
+suffix      missing_stru_case
+calculation scf
+basis_type  pw
+stru_file   STRUCTURE_NOT_PRESENT
+kpoint_file KPT
+ecutwfc     60
+scf_thr     1e-6

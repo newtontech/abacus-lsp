@@ -1,0 +1,6 @@
+INPUT_PARAMETERS
+suffix      Si_low_cut
+calculation scf
+basis_type  pw
+ecutwfc     20
+scf_thr     1e-5
