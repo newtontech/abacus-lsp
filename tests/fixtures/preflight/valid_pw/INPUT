@@ -1,0 +1,9 @@
+INPUT_PARAMETERS
+suffix      Si_scf
+calculation scf
+basis_type  pw
+ntype       1
+ecutwfc     80
+scf_thr     1e-7
+smearing_method gauss
+smearing_sigma 0.02

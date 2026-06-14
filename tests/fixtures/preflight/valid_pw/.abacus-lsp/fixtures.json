@@ -1,0 +1,40 @@
+{
+  "fixtures": [
+    {
+      "name": "valid_pw",
+      "path": "tests/fixtures/preflight/valid_pw",
+      "expect_ok": true,
+      "expect_codes": []
+    },
+    {
+      "name": "ntype_mismatch",
+      "path": "tests/fixtures/preflight/ntype_mismatch",
+      "expect_ok": false,
+      "expect_codes": ["ABACUS602"]
+    },
+    {
+      "name": "lcao_no_orbital",
+      "path": "tests/fixtures/preflight/lcao_no_orbital",
+      "expect_ok": false,
+      "expect_codes": ["ABACUS604"]
+    },
+    {
+      "name": "low_ecutwfc",
+      "path": "tests/fixtures/preflight/low_ecutwfc",
+      "expect_ok": true,
+      "expect_codes": ["ABACUS607"]
+    },
+    {
+      "name": "missing_cross_file",
+      "path": "tests/fixtures/preflight/missing_cross_file",
+      "expect_ok": false,
+      "expect_codes": ["ABACUS601"]
+    },
+    {
+      "name": "keyword_basis_mismatch",
+      "path": "tests/fixtures/preflight/keyword_basis_mismatch",
+      "expect_ok": false,
+      "expect_codes": ["ABACUS610"]
+    }
+  ]
+}

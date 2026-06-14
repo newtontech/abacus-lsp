@@ -1,0 +1,7 @@
+{
+  "software_version": "abacus >=3.7",
+  "runtime_image": "registry.example.com/abacus:3.7.0",
+  "schema_source": "abacus-lsp builtin",
+  "high_accuracy_production": false,
+  "ecutwfc_warning_ry": 50.0
+}

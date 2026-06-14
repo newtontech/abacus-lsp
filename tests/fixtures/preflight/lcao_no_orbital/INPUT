@@ -1,0 +1,6 @@
+INPUT_PARAMETERS
+suffix      Si_lcao
+calculation scf
+basis_type  lcao
+ecutwfc     100
+scf_thr     1e-6
