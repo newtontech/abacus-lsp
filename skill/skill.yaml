@@ -1,0 +1,32 @@
+schema: scientific-lsp-skill/v1
+name: abacus
+software: abacus
+display_name: ABACUS
+description: ABACUS input preflight for INPUT, STRU, and KPT case directories.
+package:
+  name: abacus-lsp
+  install: pip install abacus-lsp
+entrypoints:
+  server: abacus-lsp
+  tool: abacus-lsp-tool
+file_patterns:
+  - INPUT
+  - STRU
+  - KPT
+operations:
+  - capabilities
+  - check
+  - context
+  - complete
+  - hover
+  - symbols
+  - fix
+diagnostic_contract: DiagnosticEnvelope/v1
+blocking_policy:
+  mode: fail-on-blocking
+  description: Use --fail-on-blocking when generated inputs must be launch-ready.
+source_provenance:
+  -
+    kind: official_docs
+    label: ABACUS Documentation
+    url: https://abacus.deepmodeling.com/en/latest/
