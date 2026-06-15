@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "abacus-lsp"
-version = "0.1.0"
+version = "0.1.1rc1"
 description = "Language Server Protocol and CLI tools for ABACUS INPUT, STRU, and KPT files"
 readme = "README.md"
 license = { text = "MIT" }
@@ -48,6 +48,10 @@ abacus-lint = "abacus_lsp.cli:lint_main"
 abacus-fmt = "abacus_lsp.cli:fmt_main"
 abacus-test = "abacus_lsp.cli:test_main"
 abacus-lsp-tool = "abacus_lsp.tool:main"
+
+
+[tool.hatch.build.force-include]
+"skill" = "skill"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/abacus_lsp"]
