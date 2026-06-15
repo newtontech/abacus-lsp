@@ -1,0 +1,4 @@
+INPUT_PARAMETERS
+calculation nscf
+basis_type pw
+ecutwfc 50

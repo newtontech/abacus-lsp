@@ -13,9 +13,29 @@ EXPLANATIONS = {
         "summary": "LCAO basis calculations require NUMERICAL_ORBITAL entries in STRU.",
         "next_action": "edit STRU",
     },
+    "ABACUS206": {
+        "summary": "NUMERICAL_ORBITAL count differs from ATOMIC_POSITIONS element count.",
+        "next_action": "ensure each atomic species has a matching orbital file",
+    },
+    "ABACUS207": {
+        "summary": "ATOMIC_SPECIES order differs from ATOMIC_POSITIONS order.",
+        "next_action": "reorder ATOMIC_SPECIES to match ATOMIC_POSITIONS",
+    },
+    "ABACUS208": {
+        "summary": "latname is set but STRU contains LATTICE_VECTORS.",
+        "next_action": "remove latname or replace LATTICE_VECTORS with lattice name",
+    },
     "ABACUS209": {
         "summary": "gamma_only overrides normal KPT sampling.",
         "next_action": "edit INPUT or KPT",
+    },
+    "ABACUS210": {
+        "summary": "nscf calculation requires explicit K-point sampling.",
+        "next_action": "set KPT mode to 'mp' with non-zero count",
+    },
+    "ABACUS211": {
+        "summary": "Keyword is LCAO-only, ignored with basis_type=pw.",
+        "next_action": "remove LCAO-only keyword or switch basis_type to lcao",
     },
     "ABACUS301": {
         "summary": "SCF convergence failed during the self-consistent field iteration.",
@@ -33,9 +53,29 @@ EXPLANATIONS = {
         "summary": "A file error was detected in the runtime log.",
         "next_action": "verify all file paths in INPUT (pseudo_dir, orbital_dir, etc.)",
     },
+    "ABACUS305": {
+        "summary": "Pseudopotential file not found during ABACUS execution.",
+        "next_action": "check pseudo_dir path and ATOMIC_SPECIES pseudopotential filenames",
+    },
+    "ABACUS306": {
+        "summary": "Numerical orbital file not found during ABACUS execution.",
+        "next_action": "check orbital_dir path and NUMERICAL_ORBITAL filenames",
+    },
+    "ABACUS307": {
+        "summary": "Illegal or out-of-range K-point encountered.",
+        "next_action": "verify K-point definitions in KPT file",
+    },
     "ABACUS309": {
         "summary": "Memory allocation failed during ABACUS execution.",
         "next_action": "reduce system size, lower ecutwfc, or increase available memory",
+    },
+    "ABACUS310": {
+        "summary": "MPI or parallel execution error occurred.",
+        "next_action": "check MPI configuration or reduce number of processes",
+    },
+    "ABACUS311": {
+        "summary": "DFT+U self-consistency failed.",
+        "next_action": "adjust Hubbard U parameters or orbital_corr settings",
     },
 }
 
@@ -92,18 +132,180 @@ def explain_diagnostic(code: str) -> dict[str, Any]:
 
 
 def apply_fix(case_dir: Path, code: str) -> dict[str, Any]:
+    """Apply a deterministic fix for a diagnostic code.
+
+    Returns a DiagnosticEnvelope/v1-compatible repair preview or explicit
+    refusal reasons for unsafe cases.
+    """
+    # ABACUS205: Add NUMERICAL_ORBITAL section to STRU
+    # Handle this case specially since the diagnostic is only generated
+    # when NUMERICAL_ORBITAL is NOT present in STRU
     if code == "ABACUS205":
         stru = case_dir / "STRU"
         text = stru.read_text(encoding="utf-8") if stru.exists() else ""
-        if "NUMERICAL_ORBITAL" not in text:
-            stru.write_text(
+        if "NUMERICAL_ORBITAL" in text:
+            return {
+                "ok": False,
+                "changed": [],
+                "code": code,
+                "reason": "STRU already contains NUMERICAL_ORBITAL section",
+                "diagnostic_envelope": "v1",
+                "operation": "fix",
+                "safe_to_apply": False,
+            }
+        if stru.exists():
+            preview = (
                 text.rstrip()
                 + "\n\nNUMERICAL_ORBITAL\n"
-                + "# Add orbital files matching ATOMIC_POSITIONS order\n",
-                encoding="utf-8",
+                + "# Add orbital files matching ATOMIC_POSITIONS order\n"
             )
-            return {"ok": True, "changed": [str(stru)], "code": code}
-    return {"ok": False, "changed": [], "code": code, "reason": "no safe automatic fix"}
+            return {
+                "ok": True,
+                "changed": [str(stru)],
+                "code": code,
+                "diagnostic_envelope": "v1",
+                "operation": "fix",
+                "safe_to_apply": True,
+                "preview": {
+                    "file": str(stru),
+                    "action": "append_section",
+                    "section": "NUMERICAL_ORBITAL",
+                    "diff": (
+                        "+ NUMERICAL_ORBITAL\n"
+                        "+ # Add orbital files matching ATOMIC_POSITIONS order"
+                    ),
+                },
+                "applied_fix": {
+                    "kind": "insert_section",
+                    "file": "STRU",
+                    "section": "NUMERICAL_ORBITAL",
+                },
+            }
+        return {
+            "ok": False,
+            "changed": [],
+            "code": code,
+            "reason": "STRU file does not exist",
+            "diagnostic_envelope": "v1",
+            "operation": "fix",
+            "safe_to_apply": False,
+        }
+
+    diagnostics = analyze_case(case_dir)
+    target_diag = None
+    for diag in diagnostics:
+        if diag.code == code:
+            target_diag = diag
+            break
+
+    if target_diag is None:
+        return {
+            "ok": False,
+            "changed": [],
+            "code": code,
+            "reason": f"No diagnostic with code {code} found in case directory",
+            "diagnostic_envelope": "v1",
+            "operation": "fix",
+            "safe_to_apply": False,
+        }
+
+    # ABACUS210: Set K-point mode to 'mp' for nscf
+    if code == "ABACUS210":
+        kpt = case_dir / "KPT"
+        text = kpt.read_text(encoding="utf-8") if kpt.exists() else ""
+        if kpt.exists():
+            preview = "K_POINTS\n0\nmp\n8 8 8 0 0 0\n"
+            return {
+                "ok": True,
+                "changed": [str(kpt)],
+                "code": code,
+                "diagnostic_envelope": "v1",
+                "operation": "fix",
+                "safe_to_apply": True,
+                "preview": {
+                    "file": str(kpt),
+                    "action": "replace_content",
+                    "content": preview,
+                },
+                "applied_fix": {
+                    "kind": "set_kpoint_mode",
+                    "file": "KPT",
+                    "mode": "mp",
+                },
+            }
+        return {
+            "ok": False,
+            "changed": [],
+            "code": code,
+            "reason": "KPT file does not exist",
+            "diagnostic_envelope": "v1",
+            "operation": "fix",
+            "safe_to_apply": False,
+        }
+
+    # ABACUS211: Remove LCAO-only keyword
+    if code == "ABACUS211":
+        keyword = target_diag.suggested_fix.get("keyword") if target_diag.suggested_fix else None
+        if keyword:
+            inp = case_dir / "INPUT"
+            if inp.exists():
+                lines = inp.read_text(encoding="utf-8").splitlines()
+                new_lines = [line for line in lines if not line.strip().lower().startswith(keyword)]
+                preview = "\n".join(new_lines) + "\n"
+                return {
+                    "ok": True,
+                    "changed": [str(inp)],
+                    "code": code,
+                    "diagnostic_envelope": "v1",
+                    "operation": "fix",
+                    "safe_to_apply": True,
+                    "preview": {
+                        "file": str(inp),
+                        "action": "remove_keyword",
+                        "keyword": keyword,
+                        "lines_removed": len(lines) - len(new_lines),
+                    },
+                    "applied_fix": {
+                        "kind": "remove_keyword",
+                        "keyword": keyword,
+                    },
+                }
+        return {
+            "ok": False,
+            "changed": [],
+            "code": code,
+            "reason": "Cannot determine keyword to remove",
+            "diagnostic_envelope": "v1",
+            "operation": "fix",
+            "safe_to_apply": False,
+        }
+
+    # Runtime errors: provide guidance but refuse automatic fix
+    if code.startswith("ABACUS3"):
+        return {
+            "ok": False,
+            "changed": [],
+            "code": code,
+            "reason": (
+                f"Runtime error {code} requires manual investigation. "
+                "Check the log file for details and adjust INPUT parameters accordingly."
+            ),
+            "diagnostic_envelope": "v1",
+            "operation": "fix",
+            "safe_to_apply": False,
+            "suggested_next_steps": EXPLANATIONS.get(code, {}).get("next_action", "inspect log"),
+        }
+
+    # Default: no safe automatic fix
+    return {
+        "ok": False,
+        "changed": [],
+        "code": code,
+        "reason": "no safe automatic fix available for this diagnostic",
+        "diagnostic_envelope": "v1",
+        "operation": "fix",
+        "safe_to_apply": False,
+    }
 
 
 def export_context(case_dir: Path, out_dir: Path | None = None) -> dict[str, Any]:

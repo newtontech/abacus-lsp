@@ -1,0 +1,5 @@
+INPUT_PARAMETERS
+calculation scf
+basis_type pw
+ecutwfc 50
+dmesh 0.01
