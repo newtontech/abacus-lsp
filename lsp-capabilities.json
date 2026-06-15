@@ -1,0 +1,111 @@
+{
+  "capabilities_version": "1.0.0",
+  "schema_version": "lsp-capabilities-v1",
+  "repository": "newtontech/abacus-lsp",
+  "software": "ABACUS",
+  "software_versions_supported": ["3.8"],
+  "file_types_supported": ["INPUT", "KPT", "STRU"],
+  "operations": ["check", "context", "complete", "hover", "symbols", "fix"],
+  "sourceProvenance": [
+    {
+      "source_id": "abacus-official-docs",
+      "name": "ABACUS Official Documentation",
+      "url": "https://abacus.deepmodeling.com/en/latest/",
+      "version": "3.8",
+      "retrieval_date": "2026-06-10",
+      "license": "CC-BY-4.0",
+      "manifest_entry": "abacus-input-reference-v1",
+      "diagnostic_codes_sourced": [
+        "ABACUS001", "ABACUS002", "ABACUS004", "ABACUS005", "ABACUS006", "ABACUS007",
+        "ABACUS101", "ABACUS201", "ABACUS202", "ABACUS204"
+      ]
+    },
+    {
+      "source_id": "abacus-builtin-schema",
+      "name": "ABACUS Built-in Schema",
+      "path": "schemas/abacus-builtin.json",
+      "version": "builtin",
+      "retrieval_date": "2026-06-12",
+      "license": "internal",
+      "manifest_entry": "abacus-builtin-schema",
+      "diagnostic_codes_sourced": [
+        "ABACUS001", "ABACUS002", "ABACUS007", "ABACUS101"
+      ]
+    },
+    {
+      "source_id": "diagnostic-engine-v1-schema",
+      "name": "Diagnostic Engine v1 Schema",
+      "path": "diagnostics/diagnostic-engine-v1.schema.json",
+      "version": "1.0",
+      "retrieval_date": "2026-06-12",
+      "license": "internal",
+      "manifest_entry": "diagnostic-engine-v1-schema",
+      "diagnostic_codes_sourced": ["all"]
+    },
+    {
+      "source_id": "internal-cross-file-rules",
+      "name": "Cross-file diagnostic rules",
+      "path": "src/abacus_lsp/analyzer.py",
+      "version": "1.0",
+      "retrieval_date": "2026-06-12",
+      "license": "internal",
+      "manifest_entry": null,
+      "diagnostic_codes_sourced": [
+        "ABACUS205", "ABACUS206", "ABACUS207", "ABACUS208", "ABACUS209"
+      ]
+    },
+    {
+      "source_id": "internal-log-parser",
+      "name": "Runtime log parser patterns",
+      "path": "src/abacus_lsp/analyzer.py",
+      "version": "1.0",
+      "retrieval_date": "2026-06-12",
+      "license": "internal",
+      "manifest_entry": null,
+      "diagnostic_codes_sourced": [
+        "ABACUS301", "ABACUS302", "ABACUS303", "ABACUS304", "ABACUS308", "ABACUS309"
+      ]
+    },
+    {
+      "source_id": "internal-third-party-integration",
+      "name": "Third-party integration rules",
+      "path": "src/abacus_lsp/analyzer.py",
+      "version": "1.0",
+      "retrieval_date": "2026-06-12",
+      "license": "internal",
+      "manifest_entry": null,
+      "diagnostic_codes_sourced": [
+        "ABACUS401", "ABACUS402", "ABACUS420", "ABACUS421", "ABACUS422"
+      ]
+    }
+  ],
+  "diagnostic_categories": {
+    "syntax": {
+      "codes": ["ABACUS001", "ABACUS002", "ABACUS004", "ABACUS005", "ABACUS006", "ABACUS007"],
+      "blocking_default": true
+    },
+    "type/value": {
+      "codes": ["ABACUS101"],
+      "blocking_default": true
+    },
+    "cross-file reference": {
+      "codes": ["ABACUS201", "ABACUS202", "ABACUS204", "ABACUS205", "ABACUS206", "ABACUS207", "ABACUS208", "ABACUS209"],
+      "blocking_default": true
+    },
+    "preflight/runtime-risk": {
+      "codes": ["ABACUS301", "ABACUS302", "ABACUS303", "ABACUS304", "ABACUS308", "ABACUS309"],
+      "blocking_default": false
+    },
+    "semantic consistency": {
+      "codes": ["ABACUS401", "ABACUS402", "ABACUS420", "ABACUS421", "ABACUS422"],
+      "blocking_default": false
+    }
+  },
+  "openqc": {
+    "lsp_check_family": true,
+    "language_detection": ["INPUT", "KPT", "STRU"],
+    "executable_configurable": true,
+    "cli_smoke_test": "scripts/openqc_smoke.sh",
+    "compatibility_report_entry": "lsp-capabilities.json"
+  }
+}

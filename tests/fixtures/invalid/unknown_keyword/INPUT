@@ -1,0 +1,4 @@
+INPUT_PARAMETERS
+calculation scf
+ecutwfc 50
+unknown_param test_value
