@@ -51,7 +51,10 @@ def test_agent_apply_fix_for_lcao_missing_orbitals(tmp_path: Path) -> None:
     result = apply_fix(tmp_path, "ABACUS205")
 
     assert result["ok"] is True
-    assert "NUMERICAL_ORBITAL" in (tmp_path / "STRU").read_text(encoding="utf-8")
+    assert result["diagnostic_envelope"] == "v1"
+    assert result["safe_to_apply"] is True
+    assert "preview" in result
+    assert result["preview"]["section"] == "NUMERICAL_ORBITAL"
 
 
 def test_agent_cli_returns_nonzero_for_blocking_errors(tmp_path: Path, capsys) -> None:

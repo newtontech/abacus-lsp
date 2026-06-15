@@ -453,7 +453,12 @@ def parse_log(path: Path) -> list[Diagnostic]:
       - ABACUS302: Geometry optimization not converged
       - ABACUS303: Segfault detected
       - ABACUS304: File error in log
+      - ABACUS305: Pseudopotential not found
+      - ABACUS306: Numerical orbital not found
+      - ABACUS307: Illegal K-point
       - ABACUS309: Memory allocation error
+      - ABACUS310: MPI/parallel error
+      - ABACUS311: DFT+U convergence failure
     """
     diagnostics: list[Diagnostic] = []
     if not path.exists():
@@ -532,14 +537,117 @@ def parse_log(path: Path) -> list[Diagnostic]:
                     confidence=0.90,
                 )
             )
+
+        # ABACUS305: Pseudopotential not found
+        if (
+            "PSEUDO" in upper
+            and ("NOT FOUND" in upper or "NOT PRESENT" in upper or "MISSING" in upper)
+        ):
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS305",
+                    "error",
+                    f"Pseudopotential error in log: {line.strip()}",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={
+                        "kind": "verify_pseudopotential_paths",
+                        "file": "STRU",
+                        "section": "ATOMIC_SPECIES",
+                    },
+                    confidence=0.92,
+                )
+            )
+
+        # ABACUS306: Numerical orbital not found
+        if (
+            "ORBITAL" in upper
+            and ("NOT FOUND" in upper or "NOT PRESENT" in upper or "MISSING" in upper)
+        ):
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS306",
+                    "error",
+                    f"Numerical orbital error in log: {line.strip()}",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={
+                        "kind": "verify_orbital_paths",
+                        "file": "STRU",
+                        "section": "NUMERICAL_ORBITAL",
+                    },
+                    confidence=0.92,
+                )
+            )
+
+        # ABACUS307: Illegal K-point
+        if (
+            "K-POINT" in upper
+            and ("ILLEGAL" in upper or "INVALID" in upper or "OUT OF RANGE" in upper)
+        ):
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS307",
+                    "error",
+                    f"Illegal K-point in log: {line.strip()}",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={
+                        "kind": "verify_kpoint_definition",
+                        "file": "KPT",
+                    },
+                    confidence=0.88,
+                )
+            )
+
+        # ABACUS310: MPI/parallel error
+        if ("MPI" in upper and "ERROR" in upper) or ("PARALLEL" in upper and "ERROR" in upper):
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS310",
+                    "error",
+                    f"MPI/parallel error in log: {line.strip()}",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={
+                        "kind": "check_mpi_or_reduce_nprocs",
+                    },
+                    confidence=0.85,
+                )
+            )
+
+        # ABACUS311: DFT+U convergence failure
+        if "DFT+U" in upper and ("NOT CONVERGED" in upper or "CONVERGENCE FAILED" in upper):
+            diagnostics.append(
+                Diagnostic(
+                    "ABACUS311",
+                    "error",
+                    "DFT+U self-consistency failure in runtime log",
+                    str(path),
+                    line_no,
+                    evidence=[line.strip()],
+                    suggested_fix={
+                        "kind": "adjust_hubbard_u_parameters",
+                        "file": "INPUT",
+                    },
+                    confidence=0.88,
+                )
+            )
+
     return diagnostics
 
 
 def _cross_file_diagnostics(
     input_file: InputFile, stru_file: StruFile, kpt_file: KptFile, case_dir: Path
 ) -> list[Diagnostic]:
-    diagnostics: list[Diagnostic] = []
+    diagnostics = []
     basis_type = input_file.parameters.get("basis_type", "").lower()
+    calculation = input_file.parameters.get("calculation", "").lower()
+
     if basis_type == "lcao" and "NUMERICAL_ORBITAL" not in stru_file.sections:
         diagnostics.append(
             Diagnostic(
@@ -631,6 +739,49 @@ def _cross_file_diagnostics(
                         1,
                     )
                 )
+
+    # ABACUS210: nscf calculation requires KPT file with proper K-point sampling
+    if calculation == "nscf" and kpt_file.count == 0:
+        diagnostics.append(
+            Diagnostic(
+                "ABACUS210",
+                "error",
+                "nscf calculation requires explicit K-point sampling (count > 0)",
+                str(kpt_file.path),
+                1,
+                evidence=[
+                    f"calculation: {calculation}",
+                    f"kpt_count: {kpt_file.count}",
+                ],
+                suggested_fix={
+                    "kind": "set_kpoint_mode",
+                    "file": "KPT",
+                    "mode": "mp",
+                },
+                confidence=0.92,
+            )
+        )
+
+    # ABACUS211: PW basis with LCAO-only keywords
+    if basis_type == "pw":
+        lcao_only_keywords = {"dmesh", "dmax", "lmaxmax"}
+        for kw in lcao_only_keywords:
+            if kw in input_file.parameters:
+                diagnostics.append(
+                    Diagnostic(
+                        "ABACUS211",
+                        "warning",
+                        f"keyword '{kw}' is LCAO-only, ignored with basis_type=pw",
+                        str(input_file.path),
+                        input_file.parameter_lines.get(kw, [1])[-1],
+                        suggested_fix={
+                            "kind": "remove_keyword",
+                            "keyword": kw,
+                        },
+                        confidence=0.90,
+                    )
+                )
+
     return diagnostics
 
 

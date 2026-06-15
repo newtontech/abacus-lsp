@@ -88,6 +88,51 @@ def test_log_parser_memory_allocation_error(tmp_path: Path) -> None:
     assert diags[0].severity == "error"
 
 
+def test_log_parser_pseudo_not_found(tmp_path: Path) -> None:
+    """ABACUS305: Pseudopotential not found."""
+    log = tmp_path / "running.log"
+    log.write_text("ERROR: pseudopotential Si.upf NOT FOUND\n", encoding="utf-8")
+    diags = parse_log(log)
+    assert any(d.code == "ABACUS305" for d in diags)
+    assert diags[0].severity == "error"
+
+
+def test_log_parser_orbital_not_found(tmp_path: Path) -> None:
+    """ABACUS306: Numerical orbital not found."""
+    log = tmp_path / "running.log"
+    log.write_text("ERROR: orbital Si.orb NOT FOUND\n", encoding="utf-8")
+    diags = parse_log(log)
+    assert any(d.code == "ABACUS306" for d in diags)
+    assert diags[0].severity == "error"
+
+
+def test_log_parser_illegal_kpoint(tmp_path: Path) -> None:
+    """ABACUS307: Illegal K-point."""
+    log = tmp_path / "running.log"
+    log.write_text("ERROR: K-POINT is ILLEGAL\n", encoding="utf-8")
+    diags = parse_log(log)
+    assert any(d.code == "ABACUS307" for d in diags)
+    assert diags[0].severity == "error"
+
+
+def test_log_parser_mpi_error(tmp_path: Path) -> None:
+    """ABACUS310: MPI error."""
+    log = tmp_path / "running.log"
+    log.write_text("MPI ERROR: failed to initialize\n", encoding="utf-8")
+    diags = parse_log(log)
+    assert any(d.code == "ABACUS310" for d in diags)
+    assert diags[0].severity == "error"
+
+
+def test_log_parser_dft_plus_u_failure(tmp_path: Path) -> None:
+    """ABACUS311: DFT+U convergence failure."""
+    log = tmp_path / "running.log"
+    log.write_text("DFT+U SCF NOT CONVERGED\n", encoding="utf-8")
+    diags = parse_log(log)
+    assert any(d.code == "ABACUS311" for d in diags)
+    assert diags[0].severity == "error"
+
+
 def test_log_parser_empty(tmp_path: Path) -> None:
     """No errors in a clean log."""
     log = tmp_path / "running.log"

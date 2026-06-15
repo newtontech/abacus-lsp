@@ -72,3 +72,37 @@ def test_stru_and_kpt_formatter_are_idempotent() -> None:
         "STRU", stru
     )
     assert format_file_text("KPT", format_file_text("KPT", kpt)) == format_file_text("KPT", kpt)
+
+
+def test_nscf_requires_explicit_kpoints(tmp_path: Path) -> None:
+    """ABACUS210: nscf calculation requires explicit K-point sampling."""
+    (tmp_path / "INPUT").write_text(
+        "INPUT_PARAMETERS\ncalculation nscf\nbasis_type pw\necutwfc 50\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "STRU").write_text(
+        "ATOMIC_SPECIES\nSi 28.085 Si.upf\n\nATOMIC_POSITIONS\nDirect\nSi\n0.0\n1\n0.0 0.0 0.0\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
+
+    diagnostics = analyze_case(tmp_path)
+
+    assert any(item.code == "ABACUS210" and item.severity == "error" for item in diagnostics)
+
+
+def test_pw_basis_with_lcao_keyword_is_warning(tmp_path: Path) -> None:
+    """ABACUS211: PW basis with LCAO-only keyword generates warning."""
+    (tmp_path / "INPUT").write_text(
+        "INPUT_PARAMETERS\ncalculation scf\nbasis_type pw\necutwfc 50\ndmesh 0.01\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "STRU").write_text(
+        "ATOMIC_SPECIES\nSi 28.085 Si.upf\n\nATOMIC_POSITIONS\nDirect\nSi\n0.0\n1\n0.0 0.0 0.0\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "KPT").write_text("K_POINTS\n0\nGamma\n1 1 1 0 0 0\n", encoding="utf-8")
+
+    diagnostics = analyze_case(tmp_path)
+
+    assert any(item.code == "ABACUS211" and item.severity == "warning" for item in diagnostics)
