@@ -1,7 +1,9 @@
 {
-  "schemaVersion": "docstring-wiki-raw-traceability-v1",
-  "generatedAt": "2026-06-15T13:43:39+00:00",
-  "repository": "abacus-lsp",
+  "schemaVersion": "openqc.lsp.traceability.v1",
+  "serverId": "abacus-lsp",
+  "repository": "newtontech/abacus-lsp",
+  "languageId": "ABACUS",
+  "generatedAt": "2026-06-15T18:26:09+00:00",
   "summary": {
     "docstringsTotal": 53,
     "docstringsLinked": 53,
@@ -11,7 +13,1132 @@
     "wikiSourcesWithoutRaw": 0,
     "rawManifestFailures": 0
   },
-  "manifestErrors": [],
-  "docstringViolations": [],
-  "wikiViolations": []
+  "docstrings": [
+    {
+      "file": "scripts/check_docstring_traceability.py",
+      "line": 2,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/__init__.py",
+      "line": 1,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/agent.py",
+      "line": 101,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/agent.py",
+      "line": 138,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/agent_lsp.py",
+      "line": 1,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/agent_lsp.py",
+      "line": 17,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/agent_operations.py",
+      "line": 1,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/agent_operations.py",
+      "line": 35,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/agent_operations.py",
+      "line": 61,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/analyzer.py",
+      "line": 449,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 1,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 206,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 238,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 260,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 334,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 379,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 405,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 441,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 574,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 616,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/formatter.py",
+      "line": 636,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 1,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 91,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 111,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 156,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 277,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 338,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 827,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 922,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 973,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/preflight.py",
+      "line": 123,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/rich_diagnostics.py",
+      "line": 1,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/rich_diagnostics.py",
+      "line": 55,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/rich_diagnostics.py",
+      "line": 64,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/rich_diagnostics.py",
+      "line": 168,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/rich_diagnostics.py",
+      "line": 239,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/rich_diagnostics.py",
+      "line": 271,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 36,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 56,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 184,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 249,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 312,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 360,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 388,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 406,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/server.py",
+      "line": 508,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/tool.py",
+      "line": 1,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/tool.py",
+      "line": 55,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/tool.py",
+      "line": 76,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/tool.py",
+      "line": 103,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/tool.py",
+      "line": 161,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/tool.py",
+      "line": 181,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    },
+    {
+      "file": "src/abacus_lsp/tool.py",
+      "line": 206,
+      "kind": "python-docstring",
+      "linked": true,
+      "wikiRefs": [
+        "wiki/concepts/Basis_Set_Types.md"
+      ],
+      "brokenWikiRefs": []
+    }
+  ],
+  "wikiSources": [
+    {
+      "path": "wiki/concepts/Basis_Set_Types.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py",
+        "raw/assets/src/abacus_lsp/schema.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/Cross_File_Diagnostics.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/DFT_Plus_U.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/Formatter.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/cli.py",
+        "raw/assets/src/abacus_lsp/formatter.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/K_Point_Generation.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/LSP_Server.md",
+      "rawRefs": [
+        "raw/assets/docs/DIAGNOSTIC_ENGINE_V1.md",
+        "raw/assets/src/abacus_lsp/server.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/Numerical_Orbitals.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/Pseudopotential_Sources.md",
+      "rawRefs": [
+        "raw/assets/abacus-pseudopotentials-orbitals.md",
+        "raw/assets/abacus-stru-format.md"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/Pseudopotentials.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/Spin_Polarization.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/schema.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/concepts/Workflow_Diagnostics.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/ABACUS_INPUT.md",
+      "rawRefs": [
+        "raw/assets/abacus-examples.md",
+        "raw/assets/abacus-input-reference.md",
+        "raw/assets/abacus-quickstart-inputs.md",
+        "raw/assets/schemas/abacus-builtin.json",
+        "raw/assets/src/abacus_lsp/schema.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/ABACUS_KPT.md",
+      "rawRefs": [
+        "raw/assets/abacus-kpt-format.md",
+        "raw/assets/abacus-quickstart-inputs.md"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/ABACUS_STRU.md",
+      "rawRefs": [
+        "raw/assets/abacus-examples.md",
+        "raw/assets/abacus-quickstart-inputs.md",
+        "raw/assets/abacus-stru-format.md"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/Diagnostic.md",
+      "rawRefs": [
+        "raw/assets/diagnostics/diagnostic-engine-v1.schema.json",
+        "raw/assets/src/abacus_lsp/analyzer.py",
+        "raw/assets/src/abacus_lsp/diagnostics.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/InputFile.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/KeywordSchema.md",
+      "rawRefs": [
+        "raw/assets/schemas/abacus-builtin.json",
+        "raw/assets/src/abacus_lsp/schema.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/KptFile.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/SchemaRegistry.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/schema.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/entities/StruFile.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/synthesis/CLI_Reference.md",
+      "rawRefs": [
+        "raw/assets/pyproject.toml",
+        "raw/assets/src/abacus_lsp/cli.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/synthesis/Calculation_Types.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py",
+        "raw/assets/src/abacus_lsp/schema.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/synthesis/Diagnostic_Codes.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py",
+        "raw/assets/src/abacus_lsp/diagnostics.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/synthesis/Examples_and_Tutorials.md",
+      "rawRefs": [
+        "raw/assets/abacus-examples.md",
+        "raw/assets/abacus-quickstart-inputs.md",
+        "raw/assets/abacus-readme.md",
+        "raw/assets/abacus-tutorials.md"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/synthesis/Log_Parsing.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/synthesis/Project_Configuration.md",
+      "rawRefs": [
+        "raw/assets/src/abacus_lsp/analyzer.py",
+        "raw/assets/src/abacus_lsp/schema.py"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    },
+    {
+      "path": "wiki/synthesis/Roadmap.md",
+      "rawRefs": [
+        "raw/assets/docs/roadmap/ROADMAP.md"
+      ],
+      "brokenRawRefs": [],
+      "manifestRefsMissing": []
+    }
+  ],
+  "ruleIds": [
+    {
+      "code": "ABACUS-ARCHITECTURE_DOC-SEMANTIC-009",
+      "role": "architecture_doc",
+      "stableId": "diagnostic-engine-v1-doc",
+      "manifestPath": "docs/DIAGNOSTIC_ENGINE_V1.md"
+    },
+    {
+      "code": "ABACUS-ARCHITECTURE_DOC-SEMANTIC-009",
+      "role": "architecture_doc",
+      "stableId": "architecture-doc",
+      "manifestPath": "docs/architecture.md"
+    },
+    {
+      "code": "ABACUS-DIAGNOSTIC_SCHEMA-SYNTAX-008",
+      "role": "diagnostic_schema",
+      "stableId": "diagnostic-engine-v1-schema",
+      "manifestPath": "diagnostics/diagnostic-engine-v1.schema.json"
+    },
+    {
+      "code": "ABACUS-EXAMPLES-SEMANTIC-006",
+      "role": "examples",
+      "stableId": "abacus-examples-v1",
+      "manifestPath": "abacus-examples.md"
+    },
+    {
+      "code": "ABACUS-FILE_FORMAT_SPEC-SYNTAX-004",
+      "role": "file_format_spec",
+      "stableId": "abacus-kpt-format-v1",
+      "manifestPath": "abacus-kpt-format.md"
+    },
+    {
+      "code": "ABACUS-FILE_FORMAT_SPEC-SYNTAX-004",
+      "role": "file_format_spec",
+      "stableId": "abacus-stru-format-v1",
+      "manifestPath": "abacus-stru-format.md"
+    },
+    {
+      "code": "ABACUS-GOVERNANCE-CONFIG-014",
+      "role": "governance",
+      "stableId": "abacus-agents-md",
+      "manifestPath": "AGENTS.md"
+    },
+    {
+      "code": "ABACUS-INTEGRATION_CONTRACT-SEMANTIC-010",
+      "role": "integration_contract",
+      "stableId": "matmaster-contract-doc",
+      "manifestPath": "docs/matmaster-contract.md"
+    },
+    {
+      "code": "ABACUS-INTEGRATION_CONTRACT-SEMANTIC-010",
+      "role": "integration_contract",
+      "stableId": "openqc-integration-doc",
+      "manifestPath": "docs/openqc-integration.md"
+    },
+    {
+      "code": "ABACUS-KEYWORD_REFERENCE-SYNTAX-003",
+      "role": "keyword_reference",
+      "stableId": "abacus-input-reference-v1",
+      "manifestPath": "abacus-input-reference.md"
+    },
+    {
+      "code": "ABACUS-KEYWORD_SCHEMA-SYNTAX-001",
+      "role": "keyword_schema",
+      "stableId": "abacus-builtin-schema",
+      "manifestPath": "schemas/abacus-builtin.json"
+    },
+    {
+      "code": "ABACUS-LLM_WIKI_CODE_SOURCE-INTERNAL-015",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-analyzer-py",
+      "manifestPath": "src/abacus_lsp/analyzer.py"
+    },
+    {
+      "code": "ABACUS-LLM_WIKI_CODE_SOURCE-INTERNAL-015",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-cli-py",
+      "manifestPath": "src/abacus_lsp/cli.py"
+    },
+    {
+      "code": "ABACUS-LLM_WIKI_CODE_SOURCE-INTERNAL-015",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-diagnostics-py",
+      "manifestPath": "src/abacus_lsp/diagnostics.py"
+    },
+    {
+      "code": "ABACUS-LLM_WIKI_CODE_SOURCE-INTERNAL-015",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-formatter-py",
+      "manifestPath": "src/abacus_lsp/formatter.py"
+    },
+    {
+      "code": "ABACUS-LLM_WIKI_CODE_SOURCE-INTERNAL-015",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-schema-py",
+      "manifestPath": "src/abacus_lsp/schema.py"
+    },
+    {
+      "code": "ABACUS-LLM_WIKI_CODE_SOURCE-INTERNAL-015",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-server-py",
+      "manifestPath": "src/abacus_lsp/server.py"
+    },
+    {
+      "code": "ABACUS-PROJECT_CONFIG-CONFIG-013",
+      "role": "project_config",
+      "stableId": "abacus-lsp-pyproject",
+      "manifestPath": "pyproject.toml"
+    },
+    {
+      "code": "ABACUS-PROJECT_OVERVIEW-SEMANTIC-002",
+      "role": "project_overview",
+      "stableId": "abacus-readme-v1",
+      "manifestPath": "abacus-readme.md"
+    },
+    {
+      "code": "ABACUS-PROJECT_OVERVIEW-SEMANTIC-002",
+      "role": "project_overview",
+      "stableId": "abacus-lsp-readme",
+      "manifestPath": "README.md"
+    },
+    {
+      "code": "ABACUS-QUALITY_DOC-SEMANTIC-011",
+      "role": "quality_doc",
+      "stableId": "quality-gate-doc",
+      "manifestPath": "docs/quality-gate.md"
+    },
+    {
+      "code": "ABACUS-REFERENCE-SYNTAX-007",
+      "role": "reference",
+      "stableId": "abacus-pseudopotentials-orbitals-v1",
+      "manifestPath": "abacus-pseudopotentials-orbitals.md"
+    },
+    {
+      "code": "ABACUS-ROADMAP-SEMANTIC-012",
+      "role": "roadmap",
+      "stableId": "roadmap-doc",
+      "manifestPath": "docs/roadmap/ROADMAP.md"
+    },
+    {
+      "code": "ABACUS-TUTORIAL-SEMANTIC-005",
+      "role": "tutorial",
+      "stableId": "abacus-quickstart-inputs-v1",
+      "manifestPath": "abacus-quickstart-inputs.md"
+    },
+    {
+      "code": "ABACUS-TUTORIAL-SEMANTIC-005",
+      "role": "tutorial",
+      "stableId": "abacus-tutorials-v1",
+      "manifestPath": "abacus-tutorials.md"
+    }
+  ],
+  "sourceUrls": [
+    {
+      "url": "https://github.com/abacusinitiative/abacus",
+      "stableId": "abacus-readme-v1",
+      "role": "project_overview"
+    },
+    {
+      "url": "https://abacus.deepmodeling.com/en/latest/input/",
+      "stableId": "abacus-input-reference-v1",
+      "role": "keyword_reference"
+    },
+    {
+      "url": "https://abacus.deepmodeling.com/en/latest/advanced/kpoints/",
+      "stableId": "abacus-kpt-format-v1",
+      "role": "file_format_spec"
+    },
+    {
+      "url": "https://abacus.deepmodeling.com/en/latest/advanced/STRU/",
+      "stableId": "abacus-stru-format-v1",
+      "role": "file_format_spec"
+    },
+    {
+      "url": "https://abacus.deepmodeling.com/en/latest/advanced/pseudopotentials/",
+      "stableId": "abacus-pseudopotentials-orbitals-v1",
+      "role": "reference"
+    },
+    {
+      "url": "https://abacus.deepmodeling.com/en/latest/quickstart/",
+      "stableId": "abacus-quickstart-inputs-v1",
+      "role": "tutorial"
+    },
+    {
+      "url": "https://abacus.deepmodeling.com/en/latest/examples/",
+      "stableId": "abacus-examples-v1",
+      "role": "examples"
+    },
+    {
+      "url": "https://abacus.deepmodeling.com/en/latest/tutorial/",
+      "stableId": "abacus-tutorials-v1",
+      "role": "tutorial"
+    }
+  ],
+  "rawManifest": [
+    {
+      "path": "abacus-readme.md",
+      "role": "project_overview",
+      "stableId": "abacus-readme-v1",
+      "checksumSha256": "1042f819e9afbd45537ed1a8c670ab9eff737059ae9b0c86778bb021b71dc864"
+    },
+    {
+      "path": "abacus-input-reference.md",
+      "role": "keyword_reference",
+      "stableId": "abacus-input-reference-v1",
+      "checksumSha256": "08122af99902cf52b58e2018895585276af0ecf8a569bfb09c629c0310f2474c"
+    },
+    {
+      "path": "abacus-kpt-format.md",
+      "role": "file_format_spec",
+      "stableId": "abacus-kpt-format-v1",
+      "checksumSha256": "f0782efbbc5da97fb96876e9b2a169c29f1f215252e30f25485d1dd8115d8730"
+    },
+    {
+      "path": "abacus-stru-format.md",
+      "role": "file_format_spec",
+      "stableId": "abacus-stru-format-v1",
+      "checksumSha256": "4d21ea3255f9ddec134f5f46128e7bc82c5e008b525a13468c60f250a920efc0"
+    },
+    {
+      "path": "abacus-pseudopotentials-orbitals.md",
+      "role": "reference",
+      "stableId": "abacus-pseudopotentials-orbitals-v1",
+      "checksumSha256": "26b8323137ff9c770464fbd787b3be7411eae78240be9ea1446429cdb723bdf8"
+    },
+    {
+      "path": "abacus-quickstart-inputs.md",
+      "role": "tutorial",
+      "stableId": "abacus-quickstart-inputs-v1",
+      "checksumSha256": "2ce45042a13e89fda2e3ede9daa2709887b08caf3e7a8f689d9a766eeaec14ae"
+    },
+    {
+      "path": "abacus-examples.md",
+      "role": "examples",
+      "stableId": "abacus-examples-v1",
+      "checksumSha256": "e74dc1eb6421ea2b93983f544fa983d010e22e51cb0c050f9c3344e9322cd056"
+    },
+    {
+      "path": "abacus-tutorials.md",
+      "role": "tutorial",
+      "stableId": "abacus-tutorials-v1",
+      "checksumSha256": "803e58742da7a36d73461ba44697f3d498ff78af416c82a34408e042c210a583"
+    },
+    {
+      "path": "diagnostics/diagnostic-engine-v1.schema.json",
+      "role": "diagnostic_schema",
+      "stableId": "diagnostic-engine-v1-schema",
+      "checksumSha256": "323191fccb3665be90c7bbd5abb8ce5d90c97c56321ac9d533b960a27f9154f3"
+    },
+    {
+      "path": "docs/DIAGNOSTIC_ENGINE_V1.md",
+      "role": "architecture_doc",
+      "stableId": "diagnostic-engine-v1-doc",
+      "checksumSha256": "ae1325b80e54b4aa6108784b80f22325af8a4324bbc7e19f791f4c41ade7c4ba"
+    },
+    {
+      "path": "docs/architecture.md",
+      "role": "architecture_doc",
+      "stableId": "architecture-doc",
+      "checksumSha256": "02d4a0be6ea88436e138a6ca04684f0ed121d52b26df02615a80cb1df8beb7c8"
+    },
+    {
+      "path": "docs/matmaster-contract.md",
+      "role": "integration_contract",
+      "stableId": "matmaster-contract-doc",
+      "checksumSha256": "02663a997ea6072219a7b0fc79f7ddce86b339253602ad01b06a3038ce8bed60"
+    },
+    {
+      "path": "docs/openqc-integration.md",
+      "role": "integration_contract",
+      "stableId": "openqc-integration-doc",
+      "checksumSha256": "d084d4e86186174f839e6c839c77ab12400c96067ea19f148ed343db3bb9d2c8"
+    },
+    {
+      "path": "docs/quality-gate.md",
+      "role": "quality_doc",
+      "stableId": "quality-gate-doc",
+      "checksumSha256": "5d7d840db36846c390219fc9f9a0c20594492449ac40d1055c8441ffda420541"
+    },
+    {
+      "path": "docs/roadmap/ROADMAP.md",
+      "role": "roadmap",
+      "stableId": "roadmap-doc",
+      "checksumSha256": "9b78124c407a5ab77f84c0cbd3b8b152fc8546bed6345668d9dc08e17ccb697d"
+    },
+    {
+      "path": "schemas/abacus-builtin.json",
+      "role": "keyword_schema",
+      "stableId": "abacus-builtin-schema",
+      "checksumSha256": "e15c0bb1db022647b4c13ba8f9f6a0f3851f24fbf6e4fee8b0ebe7354aa54def"
+    },
+    {
+      "path": "pyproject.toml",
+      "role": "project_config",
+      "stableId": "abacus-lsp-pyproject",
+      "checksumSha256": "fb61501d824a49be6e638ce0898a4eb02757feb90276a4d53b0cde646f18598e"
+    },
+    {
+      "path": "AGENTS.md",
+      "role": "governance",
+      "stableId": "abacus-agents-md",
+      "checksumSha256": "498d47546310ae81010d5462f45dd4977f5e8b5e84c1218c64a15ae956ed7286"
+    },
+    {
+      "path": "README.md",
+      "role": "project_overview",
+      "stableId": "abacus-lsp-readme",
+      "checksumSha256": "38b5568e514a5f2aef30c5bffc7fdef416b13e7b3b8150308e18a82f0d3b3d05"
+    },
+    {
+      "path": "src/abacus_lsp/analyzer.py",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-analyzer-py",
+      "rawPath": "raw/assets/src/abacus_lsp/analyzer.py",
+      "checksumSha256": "587aca11262c7c57575afadf3022ad196e82ea74087b8f634d53856ede7c3faf"
+    },
+    {
+      "path": "src/abacus_lsp/cli.py",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-cli-py",
+      "rawPath": "raw/assets/src/abacus_lsp/cli.py",
+      "checksumSha256": "6cde0a23512cda1e23d5edd146d5af56d4574ca0726f863eabb51cbd5efa8613"
+    },
+    {
+      "path": "src/abacus_lsp/diagnostics.py",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-diagnostics-py",
+      "rawPath": "raw/assets/src/abacus_lsp/diagnostics.py",
+      "checksumSha256": "b7cf6ca56c465234ce8ed667f38a73a69f19c7375cc41f3c1a84a68a9f19f7d2"
+    },
+    {
+      "path": "src/abacus_lsp/formatter.py",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-formatter-py",
+      "rawPath": "raw/assets/src/abacus_lsp/formatter.py",
+      "checksumSha256": "1c31780cec5b4da0825f2bccfa9bdd44642b3949de1c54c44f3c7caedafce2af"
+    },
+    {
+      "path": "src/abacus_lsp/schema.py",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-schema-py",
+      "rawPath": "raw/assets/src/abacus_lsp/schema.py",
+      "checksumSha256": "2e08f4bd3125a06a74df1e320973ca933dcf026c8779c26093eacde122822c31"
+    },
+    {
+      "path": "src/abacus_lsp/server.py",
+      "role": "llm_wiki_code_source",
+      "stableId": "abacus-src-abacus_lsp-server-py",
+      "rawPath": "raw/assets/src/abacus_lsp/server.py",
+      "checksumSha256": "395650c27e1ca1d28b4832729c0d1aa908c0d45b279974fd0d2e819acd484801"
+    }
+  ],
+  "_legacy": {
+    "manifestErrors": [],
+    "docstringViolations": [],
+    "wikiViolations": []
+  }
 }
