@@ -13,6 +13,26 @@ from .rich_diagnostics import agent_check_payload
 SOFTWARE = "abacus"
 
 
+def _capabilities_payload() -> dict[str, Any]:
+    for parent in Path(__file__).resolve().parents:
+        manifest_path = parent / "lsp-capabilities.json"
+        if manifest_path.exists():
+            payload: dict[str, Any] = json.loads(manifest_path.read_text(encoding="utf-8"))
+            return payload
+    return {
+        "capabilities_version": "1.0.0",
+        "software": SOFTWARE,
+        "operations": [
+            "check",
+            "context",
+            "complete",
+            "hover",
+            "symbols",
+            "fix",
+        ],
+    }
+
+
 def _file_type(path: Path) -> str:
     name = path.name.upper()
     if name in {"INCAR", "POSCAR", "KPOINTS", "POTCAR", "CONTCAR"}:
@@ -217,6 +237,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="abacus-lsp-tool")
     subparsers = parser.add_subparsers(dest="operation", required=True)
     for operation in (
+        "capabilities",
         "check",
         "preflight",
         "manifest",
@@ -227,7 +248,9 @@ def main(argv: list[str] | None = None) -> int:
         "fix",
     ):
         sub = subparsers.add_parser(operation)
-        if operation == "manifest":
+        if operation == "capabilities":
+            pass
+        elif operation == "manifest":
             sub.add_argument(
                 "path",
                 type=Path,
@@ -254,6 +277,9 @@ def main(argv: list[str] | None = None) -> int:
         if operation == "preflight":
             sub.add_argument("--fail-on-blocking", action="store_true")
     args = parser.parse_args(argv)
+    if args.operation == "capabilities":
+        print(json.dumps(_capabilities_payload(), indent=2, sort_keys=True))
+        return 0
     if args.operation == "check":
         payload = with_capabilities(check_path(args.path), "check")
         print(json.dumps(payload, indent=2, sort_keys=True))
