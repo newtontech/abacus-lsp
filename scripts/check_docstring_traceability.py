@@ -464,8 +464,91 @@ def write_manifest(root: Path) -> None:
     )
 
 
+ROLE_CATEGORY_MAP: dict[str, tuple[str, int]] = {
+    "keyword_schema": ("syntax", 1),
+    "project_overview": ("semantic", 2),
+    "keyword_reference": ("syntax", 3),
+    "file_format_spec": ("syntax", 4),
+    "tutorial": ("semantic", 5),
+    "examples": ("semantic", 6),
+    "reference": ("syntax", 7),
+    "diagnostic_schema": ("syntax", 8),
+    "architecture_doc": ("semantic", 9),
+    "integration_contract": ("semantic", 10),
+    "quality_doc": ("semantic", 11),
+    "roadmap": ("semantic", 12),
+    "project_config": ("config", 13),
+    "governance": ("config", 14),
+    "llm_wiki_code_source": ("internal", 15),
+}
+
+
+def load_manifest_data(root: Path) -> tuple[dict[str, Any], set[str], list[str]]:
+    manifest = root / "raw" / "assets" / "manifest.json"
+    if not manifest.is_file():
+        return {}, set(), ["raw/assets/manifest.json is missing"]
+    try:
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return {}, set(), [f"raw/assets/manifest.json is invalid JSON: {exc}"]
+    paths = collect_manifest_paths(data)
+    if not paths:
+        return data, set(), ["raw/assets/manifest.json contains no raw asset paths"]
+    return data, paths, []
+
+
+def build_rule_ids(manifest_data: dict[str, Any]) -> list[dict[str, str]]:
+    rules: list[dict[str, str]] = []
+    for entry in manifest_data.get("entries", []):
+        role = entry.get("role", "unknown")
+        mapping = ROLE_CATEGORY_MAP.get(role)
+        if mapping is None:
+            category, num = "uncategorized", len(ROLE_CATEGORY_MAP) + 1
+        else:
+            category, num = mapping
+        code = f"ABACUS-{role.upper()}-{category.upper()}-{num:03d}"
+        rules.append({
+            "code": code,
+            "role": role,
+            "stableId": entry.get("stable_id", ""),
+            "manifestPath": entry.get("path", ""),
+        })
+    return sorted(rules, key=lambda r: r["code"])
+
+
+def build_source_urls(manifest_data: dict[str, Any]) -> list[dict[str, Any]]:
+    urls: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for entry in manifest_data.get("entries", []):
+        url = entry.get("source_url")
+        if url and url not in seen:
+            seen.add(url)
+            urls.append({
+                "url": url,
+                "stableId": entry.get("stable_id", ""),
+                "role": entry.get("role", ""),
+            })
+    return urls
+
+
+def build_raw_manifest(manifest_data: dict[str, Any]) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for entry in manifest_data.get("entries", []):
+        item: dict[str, Any] = {
+            "path": entry.get("path", ""),
+            "role": entry.get("role", ""),
+            "stableId": entry.get("stable_id", ""),
+        }
+        if "raw_path" in entry:
+            item["rawPath"] = entry["raw_path"]
+        if "checksum_sha256" in entry:
+            item["checksumSha256"] = entry["checksum_sha256"]
+        items.append(item)
+    return items
+
+
 def build_report(root: Path) -> dict[str, Any]:
-    manifest_paths, manifest_errors = load_manifest(root)
+    manifest_data, manifest_paths, manifest_errors = load_manifest_data(root)
     docstrings = scan_docstrings(root)
     wiki_pages = scan_wiki(root, manifest_paths)
     broken_wiki = sum(len(item.broken_wiki_refs) for item in docstrings)
@@ -483,20 +566,56 @@ def build_report(root: Path) -> dict[str, Any]:
         "wikiSourcesWithoutRaw": wiki_source_failures,
         "rawManifestFailures": len(manifest_errors),
     }
+    rule_ids = build_rule_ids(manifest_data)
+    source_urls = build_source_urls(manifest_data)
+    raw_manifest = build_raw_manifest(manifest_data)
+    wiki_sources = [
+        {
+            "path": item.file,
+            "rawRefs": item.raw_refs,
+            "brokenRawRefs": item.missing_raw_refs,
+            "manifestRefsMissing": item.refs_missing_from_manifest,
+        }
+        for item in wiki_pages
+    ]
+    docstring_records = [
+        {
+            "file": item.file,
+            "line": item.line,
+            "kind": item.kind,
+            "linked": item.linked,
+            "wikiRefs": item.wiki_refs,
+            "brokenWikiRefs": item.broken_wiki_refs,
+        }
+        for item in docstrings
+    ]
     return {
-        "schemaVersion": "docstring-wiki-raw-traceability-v1",
+        "schemaVersion": "openqc.lsp.traceability.v1",
+        "serverId": "abacus-lsp",
+        "repository": "newtontech/abacus-lsp",
+        "languageId": "ABACUS",
         "generatedAt": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
-        "repository": root.name,
         "summary": summary,
-        "manifestErrors": manifest_errors,
-        "docstringViolations": [
-            asdict(item) for item in docstrings if not item.linked or item.broken_wiki_refs
-        ],
-        "wikiViolations": [
-            asdict(item)
-            for item in wiki_pages
-            if not item.raw_refs or item.missing_raw_refs or item.refs_missing_from_manifest
-        ],
+        "docstrings": docstring_records,
+        "wikiSources": wiki_sources,
+        "ruleIds": rule_ids,
+        "sourceUrls": source_urls,
+        "rawManifest": raw_manifest,
+        "_legacy": {
+            "manifestErrors": manifest_errors,
+            "docstringViolations": [
+                asdict(item)
+                for item in docstrings
+                if not item.linked or item.broken_wiki_refs
+            ],
+            "wikiViolations": [
+                asdict(item)
+                for item in wiki_pages
+                if not item.raw_refs
+                or item.missing_raw_refs
+                or item.refs_missing_from_manifest
+            ],
+        },
     }
 
 
