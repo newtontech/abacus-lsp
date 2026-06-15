@@ -98,7 +98,10 @@ CAPABILITIES = {
 
 
 def get_agent_tools_status() -> dict[str, Any]:
-    """Check if abacus-agent-tools is available as optional backend."""
+    """Check if abacus-agent-tools is available as optional backend.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
+    """
     try:
         import abacus_agent_tools  # noqa: F401
 
@@ -136,6 +139,8 @@ def apply_fix(case_dir: Path, code: str) -> dict[str, Any]:
 
     Returns a DiagnosticEnvelope/v1-compatible repair preview or explicit
     refusal reasons for unsafe cases.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     # ABACUS205: Add NUMERICAL_ORBITAL section to STRU
     # Handle this case specially since the diagnostic is only generated
