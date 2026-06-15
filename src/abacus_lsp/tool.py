@@ -1,4 +1,7 @@
-"""Agent-facing CLI for Diagnostic Engine v1 operations."""
+"""Agent-facing CLI for Diagnostic Engine v1 operations.
+
+LLM Wiki: wiki/concepts/Basis_Set_Types.md
+"""
 
 from __future__ import annotations
 
@@ -55,6 +58,8 @@ def _load_intent(path: Path) -> dict[str, Any] | None:
     (e.g. ``software_version``, ``ecutwfc_warning_ry``,
     ``high_accuracy_production``). It is a workspace-local artifact, never a
     MatMaster/Bohrium runtime concept.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     case_dir = path if path.is_dir() else path.parent
     intent_path = case_dir / ".abacus-lsp" / "intent.json"
@@ -74,6 +79,8 @@ def _looks_like_workspace(case_dir: Path) -> bool:
     cross-artifact graph; a directory with only an INPUT falls back to the
     legacy single-file lint path so callers that progressively build inputs
     are not flooded with blocking missing-artifact errors before STRU exists.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     if not case_dir.is_dir():
         return False
@@ -97,6 +104,8 @@ def _collect_preflight(
 
     Imported lazily so callers that never touch preflight (e.g. single-file
     LSP hover) pay no import cost.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     from .preflight import preflight_diagnostics, resolve_version_assumption
 
@@ -149,7 +158,10 @@ _OVERLAP_CODES_BY_LEGACY = {
 
 
 def _dedupe_preflight(legacy: list[Any], preflight: list[Any]) -> list[Any]:
-    """Drop preflight diagnostics whose finding the legacy analyzer already emitted."""
+    """Drop preflight diagnostics whose finding the legacy analyzer already emitted.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
+    """
     emitted_legacy = {
         getattr(item, "code", None) or (item.get("code") if isinstance(item, dict) else None)
         for item in legacy
@@ -166,7 +178,10 @@ def _dedupe_preflight(legacy: list[Any], preflight: list[Any]) -> list[Any]:
 
 
 def preflight_path(path: Path) -> dict[str, Any]:
-    """Return a preflight-only payload (universal checks, no legacy analyzer)."""
+    """Return a preflight-only payload (universal checks, no legacy analyzer).
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
+    """
     from .preflight import preflight_diagnostics, resolve_version_assumption
 
     intent = _load_intent(path)
@@ -193,6 +208,8 @@ def manifest_path(path: Path | None = None) -> dict[str, Any]:
     When ``path`` is given, fixture expectations declared in
     ``.abacus-lsp/fixtures.json`` are merged in so the parent probe can confirm
     a case directory exercises the documented codes.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     from .preflight import fleet_manifest
 

@@ -23,6 +23,8 @@ The diagnostics emitted here are plain dictionaries (not the legacy
 ``Diagnostic`` dataclass) so they can carry the richer ``DiagnosticEnvelope/v1``
 fields (``source_provenance``, ``domain_tags``, ``facts``, ``artifact_roles``,
 ``version_assumption``, ``actions``) directly.
+
+LLM Wiki: wiki/concepts/Basis_Set_Types.md
 """
 
 from __future__ import annotations
@@ -92,6 +94,8 @@ class ArtifactNode:
     filesystem path (may be a non-existent reference, which is itself a
     finding); ``source`` records where the reference originated so consumers
     can trace provenance.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
 
     role: str
@@ -104,7 +108,10 @@ class ArtifactNode:
 
 @dataclass
 class ArtifactGraph:
-    """Generic cross-artifact graph built from a parsed case directory."""
+    """Generic cross-artifact graph built from a parsed case directory.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
+    """
 
     case_dir: Path
     nodes: list[ArtifactNode] = field(default_factory=list)
@@ -113,7 +120,10 @@ class ArtifactGraph:
         return [node for node in self.nodes if node.role == role]
 
     def to_json(self) -> list[dict[str, Any]]:
-        """Serialize the graph for the parent probe/report workflow."""
+        """Serialize the graph for the parent probe/report workflow.
+
+        LLM Wiki: wiki/concepts/Basis_Set_Types.md
+        """
 
         def _node_json(node: ArtifactNode) -> dict[str, Any]:
             payload: dict[str, Any] = {
@@ -148,6 +158,8 @@ def build_artifact_graph(
     The model is generic: it records roles + resolved paths + provenance. The
     same shape generalizes to other fleet backends because it never bakes in
     MatMaster/Bohrium runtime concepts (no input_dir, no image, no session).
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     case_dir = case_dir.resolve()
     graph = ArtifactGraph(case_dir=case_dir)
@@ -267,6 +279,8 @@ def preflight_diagnostics(
     Returns a tuple of (diagnostics, artifact_graph). Diagnostics are envelope
     dicts carrying the full ``DiagnosticEnvelope/v1`` field set so the agent
     CLI can emit them directly without re-shaping.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     case_dir = case_dir.resolve()
     registry = registry or SchemaRegistry.builtin().with_project_overrides(case_dir)
@@ -328,6 +342,8 @@ def _diag(
     ``source_provenance``, ``fix_hints``/``actions``) plus the richer envelope
     fields (``facts``, ``artifact_roles``, ``domain_tags``,
     ``version_assumption``) used by the parent fleet probe.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     line0 = max(line - 1, 0)
     col0 = max(column - 1, 0)
@@ -815,6 +831,8 @@ def resolve_version_assumption(intent: dict[str, Any] | None) -> dict[str, Any]:
     acceptance criterion. The intent contract can override ``software_version``
     (e.g. ``abacus >=3.6``); otherwise we fall back to the schema version the
     builtin keyword set was authored against.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     intent = intent or {}
     software_version = intent.get("software_version")
@@ -906,6 +924,8 @@ def _version_assumption_diagnostic(
     This makes the version assumption machine-readable in the diagnostic stream
     itself (not just metadata) so the parent probe can surface it without
     parsing the envelope top-level.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     if version_assumption["exact_runtime_known"]:
         return []
@@ -956,6 +976,8 @@ def fleet_manifest(
     which preflight codes exist, which capabilities are implemented, and which
     fixtures exercise them. Keeping it as data (not README prose) means the
     fleet regression evidence stays in sync with the implementation.
+
+    LLM Wiki: wiki/concepts/Basis_Set_Types.md
     """
     codes = {
         CODE_MISSING_ARTIFACT: {
