@@ -38,7 +38,9 @@ EXCLUDED_DIRS = {
     "wiki",
 }
 
-WIKI_RE = re.compile(r"(?<![A-Za-z0-9_./-])(wiki/[A-Za-z0-9_./%+@:#=-]+?\.md)(?:#[A-Za-z0-9_.-]+)?")
+WIKI_RE = re.compile(
+    r"(?<![A-Za-z0-9_./-])(wiki/[A-Za-z0-9_./%+@:#=-]+?\.md)(?:#[A-Za-z0-9_.-]+)?"
+)
 RAW_RE = re.compile(
     r"(?<![A-Za-z0-9_./-])(raw/[A-Za-z0-9_./%+@:#=-]+\.[A-Za-z0-9][A-Za-z0-9_-]*)"
 )
@@ -71,7 +73,9 @@ def should_skip(path: Path) -> bool:
 
 
 def extract_wiki_refs(text: str) -> list[str]:
-    return sorted(set(match.group(1).rstrip(".,);]") for match in WIKI_RE.finditer(text)))
+    return sorted(
+        set(match.group(1).rstrip(".,);]") for match in WIKI_RE.finditer(text))
+    )
 
 
 def extract_raw_refs(text: str) -> list[str]:
@@ -142,7 +146,12 @@ def scan_docstrings(root: Path) -> list[DocstringRecord]:
             )
 
     for path in sorted(
-        [*root.rglob("*.js"), *root.rglob("*.jsx"), *root.rglob("*.ts"), *root.rglob("*.tsx")]
+        [
+            *root.rglob("*.js"),
+            *root.rglob("*.jsx"),
+            *root.rglob("*.ts"),
+            *root.rglob("*.tsx"),
+        ]
     ):
         relative = path.relative_to(root)
         if should_skip(relative):
@@ -243,7 +252,9 @@ def scan_wiki(root: Path, manifest_paths: set[str]) -> list[WikiRecord]:
         not_manifested = [
             ref
             for ref in refs
-            if manifest_paths and ref not in manifest_paths and ref[11:] not in manifest_paths
+            if manifest_paths
+            and ref not in manifest_paths
+            and ref[11:] not in manifest_paths
         ]
         records.append(
             WikiRecord(
@@ -265,7 +276,9 @@ def choose_default_wiki(root: Path) -> str:
     for candidate in candidates:
         if (root / candidate).is_file():
             return candidate
-    wiki_pages = sorted((root / "wiki").rglob("*.md")) if (root / "wiki").is_dir() else []
+    wiki_pages = (
+        sorted((root / "wiki").rglob("*.md")) if (root / "wiki").is_dir() else []
+    )
     if not wiki_pages:
         raise SystemExit("No wiki page found; cannot choose a default docstring source")
     return relpath(wiki_pages[0], root)
@@ -298,7 +311,9 @@ def line_offsets(text: str) -> list[int]:
     return offsets
 
 
-def add_link_to_python_literal(segment: str, wiki_ref: str, fallback_indent: str = "") -> str:
+def add_link_to_python_literal(
+    segment: str, wiki_ref: str, fallback_indent: str = ""
+) -> str:
     source_leading = segment[: len(segment) - len(segment.lstrip())]
     doc_indent = source_leading or fallback_indent
     body = segment[len(source_leading) :]
@@ -340,7 +355,13 @@ def fix_python_docstrings(root: Path, wiki_ref: str) -> int:
             end = offsets[end_line - 1] + end_col
             fallback_indent = text[offsets[line - 1] : offsets[line - 1] + col]
             replacements.append(
-                (start, end, add_link_to_python_literal(text[start:end], wiki_ref, fallback_indent))
+                (
+                    start,
+                    end,
+                    add_link_to_python_literal(
+                        text[start:end], wiki_ref, fallback_indent
+                    ),
+                )
             )
         if not replacements:
             continue
@@ -354,7 +375,12 @@ def fix_python_docstrings(root: Path, wiki_ref: str) -> int:
 def fix_jsdoc_blocks(root: Path, wiki_ref: str) -> int:
     changed = 0
     for path in sorted(
-        [*root.rglob("*.js"), *root.rglob("*.jsx"), *root.rglob("*.ts"), *root.rglob("*.tsx")]
+        [
+            *root.rglob("*.js"),
+            *root.rglob("*.jsx"),
+            *root.rglob("*.ts"),
+            *root.rglob("*.tsx"),
+        ]
     ):
         relative = path.relative_to(root)
         if should_skip(relative):
@@ -387,7 +413,9 @@ def fix_rust_doc_comments(root: Path, wiki_ref: str) -> int:
         relative = path.relative_to(root)
         if should_skip(relative):
             continue
-        lines = path.read_text(encoding="utf-8", errors="ignore").splitlines(keepends=True)
+        lines = path.read_text(encoding="utf-8", errors="ignore").splitlines(
+            keepends=True
+        )
         output: list[str] = []
         block: list[str] = []
         file_changed = 0
@@ -507,12 +535,15 @@ def build_rule_ids(manifest_data: dict[str, Any]) -> list[dict[str, str]]:
         else:
             category, num = mapping
         code = f"ABACUS-{role.upper()}-{category.upper()}-{num:03d}"
-        rules.append({
-            "code": code,
-            "role": role,
-            "stableId": entry.get("stable_id", ""),
-            "manifestPath": entry.get("path", ""),
-        })
+        rules.append(
+            {
+                "code": code,
+                "role": role,
+                "stableId": entry.get("stable_id", ""),
+                "manifestPath": entry.get("path", ""),
+                "sourcePath": manifest_entry_raw_path(entry),
+            }
+        )
     return sorted(rules, key=lambda r: r["code"])
 
 
@@ -523,28 +554,75 @@ def build_source_urls(manifest_data: dict[str, Any]) -> list[dict[str, Any]]:
         url = entry.get("source_url")
         if url and url not in seen:
             seen.add(url)
-            urls.append({
-                "url": url,
-                "stableId": entry.get("stable_id", ""),
-                "role": entry.get("role", ""),
-            })
+            urls.append(
+                {
+                    "url": url,
+                    "rawPath": manifest_entry_raw_path(entry),
+                    "stableId": entry.get("stable_id", ""),
+                    "role": entry.get("role", ""),
+                }
+            )
     return urls
 
 
-def build_raw_manifest(manifest_data: dict[str, Any]) -> list[dict[str, Any]]:
+def manifest_entry_raw_path(entry: dict[str, Any]) -> str:
+    raw_path = entry.get("raw_path")
+    if isinstance(raw_path, str) and raw_path:
+        return raw_path
+    path = str(entry.get("path", ""))
+    if path.startswith("raw/"):
+        return path
+    return f"raw/assets/{path}" if path else "raw/assets/manifest.json"
+
+
+def build_raw_manifest(
+    manifest_data: dict[str, Any], manifest_errors: list[str]
+) -> dict[str, Any]:
     items: list[dict[str, Any]] = []
     for entry in manifest_data.get("entries", []):
         item: dict[str, Any] = {
             "path": entry.get("path", ""),
             "role": entry.get("role", ""),
             "stableId": entry.get("stable_id", ""),
+            "rawPath": manifest_entry_raw_path(entry),
         }
-        if "raw_path" in entry:
-            item["rawPath"] = entry["raw_path"]
         if "checksum_sha256" in entry:
             item["checksumSha256"] = entry["checksum_sha256"]
         items.append(item)
-    return items
+    return {
+        "path": "raw/assets/manifest.json",
+        "ok": len(manifest_errors) == 0,
+        "schemaVersion": str(manifest_data.get("schema_version") or ""),
+        "entries": items,
+        "errors": manifest_errors,
+    }
+
+
+def build_source_url_lookup(manifest_data: dict[str, Any]) -> dict[str, str]:
+    lookup: dict[str, str] = {}
+    for entry in manifest_data.get("entries", []):
+        url = entry.get("source_url")
+        if not isinstance(url, str) or not url:
+            continue
+        raw_path = manifest_entry_raw_path(entry)
+        lookup[raw_path] = url
+        path = str(entry.get("path", ""))
+        if path:
+            lookup[path] = url
+            lookup[f"raw/assets/{path}"] = url
+    return lookup
+
+
+def source_url_for_raw_ref(raw_ref: str, source_url_lookup: dict[str, str]) -> str:
+    return (
+        source_url_lookup.get(raw_ref)
+        or source_url_lookup.get(raw_ref.removeprefix("raw/assets/"))
+        or raw_ref
+    )
+
+
+def docstring_symbol(item: DocstringRecord) -> str:
+    return f"{item.kind}:{item.file}:{item.line}"
 
 
 def build_report(root: Path) -> dict[str, Any]:
@@ -568,18 +646,26 @@ def build_report(root: Path) -> dict[str, Any]:
     }
     rule_ids = build_rule_ids(manifest_data)
     source_urls = build_source_urls(manifest_data)
-    raw_manifest = build_raw_manifest(manifest_data)
+    raw_manifest = build_raw_manifest(manifest_data, manifest_errors)
+    source_url_lookup = build_source_url_lookup(manifest_data)
     wiki_sources = [
         {
+            "wikiPath": item.file,
+            "rawPath": raw_ref,
+            "sourceUrl": source_url_for_raw_ref(raw_ref, source_url_lookup),
             "path": item.file,
             "rawRefs": item.raw_refs,
             "brokenRawRefs": item.missing_raw_refs,
             "manifestRefsMissing": item.refs_missing_from_manifest,
         }
         for item in wiki_pages
+        for raw_ref in item.raw_refs
     ]
     docstring_records = [
         {
+            "path": item.file,
+            "wikiPath": item.wiki_refs[0] if item.wiki_refs else "",
+            "symbol": docstring_symbol(item),
             "file": item.file,
             "line": item.line,
             "kind": item.kind,
@@ -639,7 +725,9 @@ def main() -> int:
         type=Path,
         default=Path("reports/docstring-wiki-raw-traceability.json"),
     )
-    parser.add_argument("--write-report", action="store_true", help="Write the JSON report")
+    parser.add_argument(
+        "--write-report", action="store_true", help="Write the JSON report"
+    )
     parser.add_argument(
         "--strict",
         action="store_true",
@@ -667,7 +755,11 @@ def main() -> int:
             "rustdoc_blocks": fix_rust_doc_comments(root, wiki_ref),
             "wiki_pages": fix_wiki_raw_links(root, raw_ref),
         }
-        print(json.dumps({"fixed": changed, "wiki_ref": wiki_ref, "raw_ref": raw_ref}, indent=2))
+        print(
+            json.dumps(
+                {"fixed": changed, "wiki_ref": wiki_ref, "raw_ref": raw_ref}, indent=2
+            )
+        )
 
     manifest_path = root / "raw" / "assets" / "manifest.json"
     if args.refresh_manifest or (args.fix and not manifest_path.is_file()):

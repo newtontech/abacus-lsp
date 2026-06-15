@@ -15,7 +15,9 @@ def _load_report(repo_root: Path) -> dict:
     return json.loads(report_file.read_text(encoding="utf-8"))
 
 
-def _run_checker(repo_root: Path, *, strict: bool = False) -> subprocess.CompletedProcess:
+def _run_checker(
+    repo_root: Path, *, strict: bool = False
+) -> subprocess.CompletedProcess:
     cmd = [
         sys.executable,
         str(repo_root / "scripts" / "check_docstring_traceability.py"),
@@ -25,7 +27,9 @@ def _run_checker(repo_root: Path, *, strict: bool = False) -> subprocess.Complet
     ]
     if strict:
         cmd.append("--strict")
-    return subprocess.run(cmd, cwd=repo_root, check=False, capture_output=True, text=True)
+    return subprocess.run(
+        cmd, cwd=repo_root, check=False, capture_output=True, text=True
+    )
 
 
 def test_docstring_wiki_raw_traceability_is_complete() -> None:
@@ -101,7 +105,11 @@ def test_v1_docstrings_array_populated() -> None:
     assert isinstance(report["docstrings"], list)
     assert len(report["docstrings"]) > 0
     for doc in report["docstrings"]:
-        assert "file" in doc
+        assert "path" in doc
+        assert "wikiPath" in doc
+        assert "symbol" in doc
+        assert doc["wikiPath"].startswith("wiki/")
+        assert not doc["path"].startswith("/"), f"Absolute path: {doc['path']}"
         assert "linked" in doc
         assert not doc["file"].startswith("/"), f"Absolute path: {doc['file']}"
 
@@ -112,20 +120,28 @@ def test_v1_wiki_sources_array_populated() -> None:
     assert isinstance(report["wikiSources"], list)
     assert len(report["wikiSources"]) > 0
     for ws in report["wikiSources"]:
-        assert "path" in ws
-        assert ws["path"].startswith("wiki/")
+        assert "wikiPath" in ws
+        assert "rawPath" in ws
+        assert "sourceUrl" in ws
+        assert ws["wikiPath"].startswith("wiki/")
+        assert ws["rawPath"].startswith("raw/")
+        assert ws["sourceUrl"]
 
 
 def test_v1_source_urls_are_repository_relative() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     report = _load_report(repo_root)
-    for entry in report["rawManifest"]:
-        assert "path" in entry
-        assert not entry["path"].startswith("/"), f"Absolute path in rawManifest: {entry['path']}"
+    for entry in report["sourceUrls"]:
+        assert "rawPath" in entry
+        assert "url" in entry
+        assert entry["rawPath"].startswith("raw/")
+        assert entry["url"].startswith(("http://", "https://"))
 
 
 def test_v1_raw_manifest_populated() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     report = _load_report(repo_root)
-    assert isinstance(report["rawManifest"], list)
-    assert len(report["rawManifest"]) > 0
+    assert isinstance(report["rawManifest"], dict)
+    assert report["rawManifest"]["path"] == "raw/assets/manifest.json"
+    assert report["rawManifest"]["ok"] is True
+    assert len(report["rawManifest"]["entries"]) > 0
