@@ -6,6 +6,44 @@
   "software_versions_supported": ["3.8"],
   "file_types_supported": ["INPUT", "KPT", "STRU"],
   "operations": ["check", "context", "complete", "hover", "symbols", "fix"],
+  "capabilities": [
+    "agent-envelope",
+    "agent-json-cli",
+    "blocking-gate",
+    "completion",
+    "context",
+    "diagnostic-engine-v1",
+    "diagnostics",
+    "fix-preview",
+    "hover",
+    "llm-wiki",
+    "manifest",
+    "openqc-context",
+    "preflight",
+    "rich-diagnostics",
+    "source-provenance",
+    "symbols"
+  ],
+  "fixturePaths": {
+    "valid": [
+      "tests/fixtures/valid",
+      "tests/fixtures/preflight/valid_pw"
+    ],
+    "invalid": [
+      "tests/fixtures/invalid",
+      "tests/fixtures/preflight"
+    ],
+    "logs": [
+      "tests/fixtures/log"
+    ]
+  },
+  "wikiPaths": {
+    "rawAssets": "raw/assets",
+    "manifest": "raw/assets/manifest.json",
+    "entities": "wiki/entities",
+    "concepts": "wiki/concepts",
+    "synthesis": "wiki/synthesis"
+  },
   "sourceProvenance": [
     {
       "source_id": "abacus-official-docs",
@@ -77,6 +115,16 @@
       "diagnostic_codes_sourced": [
         "ABACUS401", "ABACUS402", "ABACUS420", "ABACUS421", "ABACUS422"
       ]
+    },
+    {
+      "source_id": "abacus-upstream-manifest",
+      "name": "ABACUS Upstream Sources Manifest",
+      "path": "raw/assets/manifest.json",
+      "version": "1.0.0",
+      "retrieval_date": "2026-06-15",
+      "license": "internal",
+      "manifest_entry": "provenance-manifest-v1",
+      "diagnostic_codes_sourced": ["all"]
     }
   ],
   "diagnostic_categories": {
