@@ -1,6 +1,7 @@
 {
   "capabilities_version": "1.0.0",
   "schema_version": "lsp-capabilities-v1",
+  "releaseVersion": "0.1.1",
   "repository": "newtontech/abacus-lsp",
   "software": "ABACUS",
   "software_versions_supported": ["3.8"],

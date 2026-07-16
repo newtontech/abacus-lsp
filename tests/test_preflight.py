@@ -72,11 +72,7 @@ def test_agent_check_payload_carries_diagnostic_envelope_v1(capsys) -> None:
 
 def test_failing_diagnostics_carry_required_envelope_fields() -> None:
     payload = preflight_path(FIXTURES / "ntype_mismatch")
-    failing = [
-        item
-        for item in payload["diagnostics"]
-        if item["code"] == CODE_NTYPE_MISMATCH
-    ]
+    failing = [item for item in payload["diagnostics"] if item["code"] == CODE_NTYPE_MISMATCH]
     assert failing, "ntype mismatch fixture must emit ABACUS602"
     item = failing[0]
     for field in REQUIRED_FAILING_FIELDS:
@@ -119,12 +115,8 @@ def test_preflight_fixture_expectations(
     assert payload["ok"] is expected_ok, (
         f"{fixture}: expected ok={expected_ok}, got codes={sorted(codes)}"
     )
-    assert must_include <= codes, (
-        f"{fixture}: expected codes {must_include}, got {sorted(codes)}"
-    )
-    blocking_codes = {
-        item["code"] for item in payload["diagnostics"] if item["blocking"]
-    }
+    assert must_include <= codes, f"{fixture}: expected codes {must_include}, got {sorted(codes)}"
+    blocking_codes = {item["code"] for item in payload["diagnostics"] if item["blocking"]}
     assert not (must_exclude_blocking & blocking_codes)
 
 
@@ -169,9 +161,7 @@ def test_low_ecutwfc_intent_override_changes_threshold(tmp_path: Path) -> None:
 
     cfg = case / ".abacus-lsp"
     cfg.mkdir()
-    (cfg / "intent.json").write_text(
-        json.dumps({"ecutwfc_warning_ry": 30.0}), encoding="utf-8"
-    )
+    (cfg / "intent.json").write_text(json.dumps({"ecutwfc_warning_ry": 30.0}), encoding="utf-8")
     overridden = preflight_path(case)
     assert CODE_LOW_ECUTWFC not in _envelope_codes(overridden)
 
@@ -314,9 +304,7 @@ def test_unresolved_pseudopotential_is_warning(tmp_path: Path) -> None:
     )
     (case / "KPT").write_text("K_POINTS\n0\nGamma\n4 4 4 0 0 0\n", encoding="utf-8")
     payload = preflight_path(case)
-    item = next(
-        d for d in payload["diagnostics"] if d["code"] == CODE_UNRESOLVED_ARTIFACT
-    )
+    item = next(d for d in payload["diagnostics"] if d["code"] == CODE_UNRESOLVED_ARTIFACT)
     assert item["severity"] == "warning"
     assert item["artifact_roles"] == ["pseudopotential"]
 
@@ -348,16 +336,12 @@ def test_suspicious_kpoints_warning_on_single_point_axis(tmp_path: Path) -> None
 
 
 def test_check_fail_on_blocking_exits_nonzero_on_failing_fixture() -> None:
-    rc = tool.main(
-        ["check", str(FIXTURES / "ntype_mismatch"), "--fail-on-blocking"]
-    )
+    rc = tool.main(["check", str(FIXTURES / "ntype_mismatch"), "--fail-on-blocking"])
     assert rc == 1
 
 
 def test_check_fail_on_blocking_exits_zero_on_valid_fixture(capsys) -> None:
-    rc = tool.main(
-        ["check", str(FIXTURES / "valid_pw"), "--fail-on-blocking"]
-    )
+    rc = tool.main(["check", str(FIXTURES / "valid_pw"), "--fail-on-blocking"])
     assert rc == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["ok"] is True
@@ -377,9 +361,7 @@ def test_actions_present_on_blocking_diagnostics() -> None:
     blocking = [d for d in payload["diagnostics"] if d["blocking"]]
     assert blocking
     for item in blocking:
-        assert item.get("actions"), (
-            f"blocking diagnostic {item['code']} must carry actions"
-        )
+        assert item.get("actions"), f"blocking diagnostic {item['code']} must carry actions"
         assert all("kind" in action for action in item["actions"])
 
 
@@ -446,8 +428,7 @@ def test_fixture_expectations_match_actual_preflight() -> None:
     for fixture in manifest["capabilities"]["fleet-regression-fixtures"]["fixtures"]:
         payload = preflight_path(repo_root / fixture["path"])
         assert payload["ok"] is fixture["expect_ok"], (
-            f"{fixture['name']}: manifest expects ok={fixture['expect_ok']}, "
-            f"got ok={payload['ok']}"
+            f"{fixture['name']}: manifest expects ok={fixture['expect_ok']}, got ok={payload['ok']}"
         )
         if fixture["expect_codes"]:
             assert set(fixture["expect_codes"]) <= _envelope_codes(payload), (

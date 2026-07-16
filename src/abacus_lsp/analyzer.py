@@ -541,9 +541,8 @@ def parse_log(path: Path) -> list[Diagnostic]:
             )
 
         # ABACUS305: Pseudopotential not found
-        if (
-            "PSEUDO" in upper
-            and ("NOT FOUND" in upper or "NOT PRESENT" in upper or "MISSING" in upper)
+        if "PSEUDO" in upper and (
+            "NOT FOUND" in upper or "NOT PRESENT" in upper or "MISSING" in upper
         ):
             diagnostics.append(
                 Diagnostic(
@@ -563,9 +562,8 @@ def parse_log(path: Path) -> list[Diagnostic]:
             )
 
         # ABACUS306: Numerical orbital not found
-        if (
-            "ORBITAL" in upper
-            and ("NOT FOUND" in upper or "NOT PRESENT" in upper or "MISSING" in upper)
+        if "ORBITAL" in upper and (
+            "NOT FOUND" in upper or "NOT PRESENT" in upper or "MISSING" in upper
         ):
             diagnostics.append(
                 Diagnostic(
@@ -585,9 +583,8 @@ def parse_log(path: Path) -> list[Diagnostic]:
             )
 
         # ABACUS307: Illegal K-point
-        if (
-            "K-POINT" in upper
-            and ("ILLEGAL" in upper or "INVALID" in upper or "OUT OF RANGE" in upper)
+        if "K-POINT" in upper and (
+            "ILLEGAL" in upper or "INVALID" in upper or "OUT OF RANGE" in upper
         ):
             diagnostics.append(
                 Diagnostic(

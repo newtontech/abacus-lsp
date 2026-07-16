@@ -392,12 +392,12 @@ def _create_server() -> Any:
     try:
         from pygls.server import LanguageServer
 
-        return LanguageServer("abacus-lsp", "0.1.0")
+        return LanguageServer("abacus-lsp", "0.1.1")
     except (ImportError, AttributeError):
         pass
     # pygls 2.x fallback
     from pygls.protocol import JsonRPCProtocol
-    from pygls.server import JsonRPCServer  # type: ignore[attr-defined]
+    from pygls.server import JsonRPCServer
 
     return JsonRPCServer(protocol_cls=JsonRPCProtocol, converter_factory=None)
 

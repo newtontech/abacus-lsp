@@ -3,7 +3,7 @@
   "serverId": "abacus-lsp",
   "repository": "newtontech/abacus-lsp",
   "languageId": "ABACUS",
-  "generatedAt": "2026-06-15T19:04:44+00:00",
+  "generatedAt": "2026-07-16T09:07:31+00:00",
   "summary": {
     "docstringsTotal": 53,
     "docstringsLinked": 53,
@@ -82,9 +82,9 @@
     {
       "path": "src/abacus_lsp/agent_lsp.py",
       "wikiPath": "wiki/concepts/Basis_Set_Types.md",
-      "symbol": "python-docstring:src/abacus_lsp/agent_lsp.py:17",
+      "symbol": "python-docstring:src/abacus_lsp/agent_lsp.py:18",
       "file": "src/abacus_lsp/agent_lsp.py",
-      "line": 17,
+      "line": 18,
       "kind": "python-docstring",
       "linked": true,
       "wikiRefs": [
@@ -355,9 +355,9 @@
     {
       "path": "src/abacus_lsp/preflight.py",
       "wikiPath": "wiki/concepts/Basis_Set_Types.md",
-      "symbol": "python-docstring:src/abacus_lsp/preflight.py:338",
+      "symbol": "python-docstring:src/abacus_lsp/preflight.py:336",
       "file": "src/abacus_lsp/preflight.py",
-      "line": 338,
+      "line": 336,
       "kind": "python-docstring",
       "linked": true,
       "wikiRefs": [
@@ -368,9 +368,9 @@
     {
       "path": "src/abacus_lsp/preflight.py",
       "wikiPath": "wiki/concepts/Basis_Set_Types.md",
-      "symbol": "python-docstring:src/abacus_lsp/preflight.py:827",
+      "symbol": "python-docstring:src/abacus_lsp/preflight.py:808",
       "file": "src/abacus_lsp/preflight.py",
-      "line": 827,
+      "line": 808,
       "kind": "python-docstring",
       "linked": true,
       "wikiRefs": [
@@ -381,9 +381,9 @@
     {
       "path": "src/abacus_lsp/preflight.py",
       "wikiPath": "wiki/concepts/Basis_Set_Types.md",
-      "symbol": "python-docstring:src/abacus_lsp/preflight.py:922",
+      "symbol": "python-docstring:src/abacus_lsp/preflight.py:903",
       "file": "src/abacus_lsp/preflight.py",
-      "line": 922,
+      "line": 903,
       "kind": "python-docstring",
       "linked": true,
       "wikiRefs": [
@@ -394,9 +394,9 @@
     {
       "path": "src/abacus_lsp/preflight.py",
       "wikiPath": "wiki/concepts/Basis_Set_Types.md",
-      "symbol": "python-docstring:src/abacus_lsp/preflight.py:973",
+      "symbol": "python-docstring:src/abacus_lsp/preflight.py:954",
       "file": "src/abacus_lsp/preflight.py",
-      "line": 973,
+      "line": 954,
       "kind": "python-docstring",
       "linked": true,
       "wikiRefs": [

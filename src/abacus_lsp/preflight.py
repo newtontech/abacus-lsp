@@ -285,9 +285,7 @@ def preflight_diagnostics(
     case_dir = case_dir.resolve()
     registry = registry or SchemaRegistry.builtin().with_project_overrides(case_dir)
     input_file = parse_input(case_dir / "INPUT", registry)
-    stru_file = parse_stru(
-        case_dir / input_file.parameters.get("stru_file", "STRU")
-    )
+    stru_file = parse_stru(case_dir / input_file.parameters.get("stru_file", "STRU"))
     kpt_file = parse_kpt(case_dir / input_file.parameters.get("kpoint_file", "KPT"))
     graph = build_artifact_graph(case_dir, input_file, stru_file, kpt_file)
 
@@ -395,8 +393,7 @@ def _missing_artifact_diagnostics(graph: ArtifactGraph) -> list[dict[str, Any]]:
                         code=CODE_MISSING_ARTIFACT,
                         severity="error",
                         message=(
-                            f"{role} artifact referenced from INPUT is missing: "
-                            f"{node.path.name}"
+                            f"{role} artifact referenced from INPUT is missing: {node.path.name}"
                         ),
                         path=node.path,
                         line=ref[1],
@@ -440,10 +437,7 @@ def _ntype_diagnostics(input_file: InputFile, stru_file: StruFile) -> list[dict[
                 _diag(
                     code=CODE_NTYPE_MISMATCH,
                     severity="information",
-                    message=(
-                        "ntype is unset; ABACUS will infer it from STRU "
-                        "ATOMIC_SPECIES"
-                    ),
+                    message=("ntype is unset; ABACUS will infer it from STRU ATOMIC_SPECIES"),
                     path=input_file.path,
                     line=1,
                     category="semantic consistency",
@@ -519,9 +513,7 @@ def _ntype_diagnostics(input_file: InputFile, stru_file: StruFile) -> list[dict[
     return out
 
 
-def _lattice_diagnostics(
-    input_file: InputFile, stru_file: StruFile
-) -> list[dict[str, Any]]:
+def _lattice_diagnostics(input_file: InputFile, stru_file: StruFile) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     has_vectors = "LATTICE_VECTORS" in stru_file.sections
     has_parameters = "LATTICE_PARAMETERS" in stru_file.sections
@@ -569,19 +561,15 @@ def _lattice_diagnostics(
     return out
 
 
-def _lcao_orbital_diagnostics(
-    input_file: InputFile, stru_file: StruFile
-) -> list[dict[str, Any]]:
-    out: list[dict[ str, Any]] = []
+def _lcao_orbital_diagnostics(input_file: InputFile, stru_file: StruFile) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
     basis_type = input_file.parameters.get("basis_type", "").lower()
     if basis_type == "lcao" and not stru_file.orbitals:
         out.append(
             _diag(
                 code=CODE_LCAO_NO_ORBITAL,
                 severity="error",
-                message=(
-                    "basis_type=lcao requires a NUMERICAL_ORBITAL section in STRU"
-                ),
+                message=("basis_type=lcao requires a NUMERICAL_ORBITAL section in STRU"),
                 path=stru_file.path,
                 line=1,
                 category="cross-file reference",
@@ -714,17 +702,12 @@ def _low_ecutwfc_diagnostics(
     # this is a high-accuracy production input, the finding is promoted to a
     # warning regardless of the baseline; otherwise the conservative default
     # triggers a warning below it.
-    threshold = float(
-        (intent or {}).get("ecutwfc_warning_ry", DEFAULT_ECUTWFC_WARNING_RY)
-    )
+    threshold = float((intent or {}).get("ecutwfc_warning_ry", DEFAULT_ECUTWFC_WARNING_RY))
     high_accuracy = bool((intent or {}).get("high_accuracy_production", False))
     if ecut < threshold:
         severity = "warning"
         blocking = False
-        message = (
-            f"ecutwfc={ecut} Ry is below the conservative workflow threshold "
-            f"({threshold} Ry)"
-        )
+        message = f"ecutwfc={ecut} Ry is below the conservative workflow threshold ({threshold} Ry)"
         if high_accuracy:
             message += "; intent marks this as high-accuracy production input"
         line = input_file.parameter_lines.get("ecutwfc", [1])[-1]
@@ -742,9 +725,7 @@ def _low_ecutwfc_diagnostics(
                     "role": ROLE_PRIMARY_INPUT,
                     "keyword": "ecutwfc",
                     "threshold_source": (
-                        "intent"
-                        if "ecutwfc_warning_ry" in (intent or {})
-                        else "default"
+                        "intent" if "ecutwfc_warning_ry" in (intent or {}) else "default"
                     ),
                 },
                 fix_hints=[
