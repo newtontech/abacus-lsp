@@ -19,6 +19,37 @@ abacus-fmt -w INPUT STRU KPT
 abacus-test static ./case
 ```
 
+## Installation
+
+Current release: `0.1.1`
+
+Install the command-line and agent tools from PyPI:
+
+```bash
+pip install abacus-lsp
+```
+
+Install the stdio language server with its optional protocol dependencies:
+
+```bash
+pip install abacus-lsp[lsp]
+abacus-lsp --stdio
+```
+
+The `abacus-lsp-tool` agent CLI exposes JSON capabilities, checks, context,
+completion, hover, symbols, and non-destructive fix previews.
+
+## Releases
+
+Releases use PyPI Trusted Publishing: a pushed `v*` tag starts the release
+workflow, which verifies that the tag matches `pyproject.toml`, builds and
+checks the distribution, and installs the wheel into a fresh virtual
+environment for CLI and fixture smoke tests. Only the protected `pypi`
+environment receives `id-token: write`; no long-lived PyPI token is stored.
+
+After this PR is merged and its release point is approved, create `v0.1.1` on
+the merge commit. Pull requests and ordinary branch pushes cannot publish.
+
 The first committed version includes a small static analyzer and formatter
 scaffold so roadmap work can start from a runnable baseline.
 
@@ -37,4 +68,3 @@ or ABACUS-agent-tools. Those integrations are planned as optional backends.
 
 The roadmap is tracked in GitHub issues and summarized in
 [docs/roadmap/ROADMAP.md](docs/roadmap/ROADMAP.md).
-

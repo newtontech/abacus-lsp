@@ -176,8 +176,7 @@ def apply_fix(case_dir: Path, code: str) -> dict[str, Any]:
                     "action": "append_section",
                     "section": "NUMERICAL_ORBITAL",
                     "diff": (
-                        "+ NUMERICAL_ORBITAL\n"
-                        "+ # Add orbital files matching ATOMIC_POSITIONS order"
+                        "+ NUMERICAL_ORBITAL\n+ # Add orbital files matching ATOMIC_POSITIONS order"
                     ),
                 },
                 "applied_fix": {

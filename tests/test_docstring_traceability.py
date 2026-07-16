@@ -15,9 +15,7 @@ def _load_report(repo_root: Path) -> dict:
     return json.loads(report_file.read_text(encoding="utf-8"))
 
 
-def _run_checker(
-    repo_root: Path, *, strict: bool = False
-) -> subprocess.CompletedProcess:
+def _run_checker(repo_root: Path, *, strict: bool = False) -> subprocess.CompletedProcess:
     cmd = [
         sys.executable,
         str(repo_root / "scripts" / "check_docstring_traceability.py"),
@@ -27,9 +25,7 @@ def _run_checker(
     ]
     if strict:
         cmd.append("--strict")
-    return subprocess.run(
-        cmd, cwd=repo_root, check=False, capture_output=True, text=True
-    )
+    return subprocess.run(cmd, cwd=repo_root, check=False, capture_output=True, text=True)
 
 
 def test_docstring_wiki_raw_traceability_is_complete() -> None:

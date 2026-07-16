@@ -76,7 +76,7 @@ def run_regression(
 
 def _has_agent_tools() -> bool:
     try:
-        import abacus_agent_tools  # type: ignore[import-not-found]  # pragma: no cover
+        import abacus_agent_tools  # pragma: no cover
     except ImportError:
         return False
     return bool(abacus_agent_tools)  # pragma: no cover

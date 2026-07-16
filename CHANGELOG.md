@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented in this file.
 
+## [0.1.1] - 2026-07-16
+
+### Added
+
+- Tag-only PyPI release automation using GitHub OIDC Trusted Publishing and
+  the protected `pypi` environment.
+- Fresh-wheel smoke coverage for the server and agent CLIs against canonical
+  valid, invalid, and runtime-log fixtures.
+- Machine-readable `releaseVersion` metadata in `lsp-capabilities.json`.
+
+### Changed
+
+- Package, runtime, capability, and `VERSION` metadata now consistently report
+  `0.1.1`. The approved post-merge release tag is `v0.1.1`.
+
 ## [0.1.0] - 2026-06-15
 
 ### Added
